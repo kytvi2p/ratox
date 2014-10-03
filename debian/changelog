@@ -1,3 +1,9 @@
+ratox (0.1+20141003.1-1ubuntu1) trusty; urgency=medium
+
+  * Upload to PPA
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 03 Oct 2014 21:12:49 +0000
+
 ratox (0.1+20141003.1-1) unstable; urgency=low
 
   * Initial release
