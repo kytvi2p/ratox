@@ -1,0 +1,13 @@
+README for ratox
+----------------
+
+Change of Proxy Address
+------------------------
+
+The upstream source defaults to '127.0.0.1:8080'. Since I assume that most of
+my users also use Tor, I took the liberty of changing the port.
+
+If this is not acceptable, fetch the source package, edit
+debian/patches/0002-proxy-addr.patch and rebuild the package.
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 03 Oct 2014 16:37:00 +0000

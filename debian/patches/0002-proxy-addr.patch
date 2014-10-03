@@ -1,0 +1,26 @@
+From: Kill Your TV <killyourtv@i2pmail.org>
+Date: Fri, 3 Oct 2014 18:52:52 +0000
+Subject: default tor proxy
+
+Since my packages are generally used by I2P/Tor users, they'd probably benefit
+by -p defaulting to Tor.
+
+---
+ config.def.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 0a42a24..e61c8a8 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -6,8 +6,8 @@
+ 
+ static int encryptdatafile = 0;
+ 
+-static char proxyaddr[] = "localhost";
+-static uint16_t proxyport = 8080;
++static char proxyaddr[] = "127.0.0.1";
++static uint16_t proxyport = 9050;
+ 
+ static struct node nodes[] = {
+ 	{

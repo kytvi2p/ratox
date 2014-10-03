@@ -1,0 +1,19 @@
+Source: ratox
+Section: net
+Priority: optional
+Maintainer: Kill Your TV <killyourtv@i2pmail.org>
+Build-Depends: debhelper (>= 9), libtoxencryptsave-dev, libtoxcore-dev, libtoxav-dev
+Standards-Version: 3.9.5
+Homepage: http://ratox.2f30.org/
+Vcs-Git: git://killyourtv.i2p/git/ratox.git
+Vcs-Browser: http://killyourtv.i2p/gitweb/?p=ratox.git
+
+Package: ratox
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: FIFO based Tox client
+ ratox is a client implementation of the rather popular tox protocol.
+ .
+ Unlike other clients relying on GUIs as an interface to the user, ratox is
+ developed with the UNIX-philosophy in mind and allows complete interaction
+ through named pipes.

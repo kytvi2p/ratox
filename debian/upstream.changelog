@@ -1,0 +1,1014 @@
+2014-10-03  sin <sin@2f30.org>
+
+	* config.def.h: Up max calls to 8 after discussion with other tox
+	developers
+
+2014-10-03  sin <sin@2f30.org>
+
+	* ratox.c: Clarify semantics
+
+2014-10-03  sin <sin@2f30.org>
+
+	* config.def.h, ratox.c: Put configurable stuff in config.def.h
+
+2014-10-03  sin <sin@2f30.org>
+
+	* ratox.c: Up max number of calls
+
+2014-10-03  sin <sin@2f30.org>
+
+	* ratox.c: Fix broken build
+
+2014-10-03  FRIGN <dev@frign.de>
+
+	* ratox.c: Refactor code and prepare multiple calls
+
+2014-10-03  sin <sin@2f30.org>
+
+	* ratox.c: Simplify cbcallstarted()
+
+2014-10-03  sin <sin@2f30.org>
+
+	* ratox.c: Implement cbcallending() to properly reset state when we
+	cancel the call
+
+2014-10-03  sin <sin@2f30.org>
+
+	* ratox.c: Hangup the call on EPIPE If you want to switch to another call or want to change the output
+	device, simply attach another program on the FIFO and kill the
+	first.  This could be another instance of aplay/aucat or simply cat.
+
+2014-10-02  sin <sin@2f30.org>
+
+	* eprintf.c, ratox.c: Stop this madness
+
+2014-10-02  sin <sin@2f30.org>
+
+	* ratox.c: Actually fill the status message buffer when creating
+	friends
+
+2014-10-02  FRIGN <dev@frign.de>
+
+	* ratox.c: Add cancelrxcall()
+
+2014-10-01  sin <sin@2f30.org>
+
+	* ratox.c: Fix format specifier for printing nospam
+
+2014-10-01  sin <sin@2f30.org>
+
+	* ratox.c: Use strtoul() instead of strtol()
+
+2014-10-01  FRIGN <dev@frign.de>
+
+	* ratox.c: Fix a small issue in setnospam and polish the output Previously, it wouldn't check 1-byte-input. Now it does.  Also,
+	nospam/out should contain the 8-digit hexadecimal number instead of
+	just the raw string passed to the in-fifo.
+
+2014-10-01  sin <sin@2f30.org>
+
+	* ratox.c: SAVING LOC!
+
+2014-10-01  sin <sin@2f30.org>
+
+	* ratox.c: Add connection delay enum instead of magic value
+
+2014-10-01  sin <sin@2f30.org>
+
+	* ratox.c: Don't use magic numbers :)
+
+2014-10-01  sin <sin@2f30.org>
+
+	* ratox.c: Receiving calls works!
+
+2014-10-01  sin <sin@2f30.org>
+
+	* ratox.c: Rename callbacks and group them properly
+
+2014-10-01  sin <sin@2f30.org>
+
+	* ratox.c: No need to print the write(2) error
+
+2014-10-01  sin <sin@2f30.org>
+
+	* config.mk, ratox.c: Starting fooling around with toxav; work in
+	progress
+
+2014-10-01  sin <sin@2f30.org>
+
+	* ratox.c: Break after we cancel the rx transfer
+
+2014-10-01  sin <sin@2f30.org>
+
+	* README: Properly underline section in README
+
+2014-10-01  sin <sin@2f30.org>
+
+	* README: Update README
+
+2014-10-01  FRIGN <dev@frign.de>
+
+	* README, ratox.c: Add nospam-slot It allows changing and reading the current nospam-value.
+
+2014-09-30  sin <sin@2f30.org>
+
+	* ratox.c: Call fiforeset() if we fail to initiate the transfer
+
+2014-09-30  sin <sin@2f30.org>
+
+	* ratox.c: Proper types
+
+2014-09-30  sin <sin@2f30.org>
+
+	* ratox.c: Be consistent in how we default to the "Anonymous" name
+
+2014-09-30  sin <sin@2f30.org>
+
+	* ratox.c: Simplify reporting of online status
+
+2014-09-30  sin <sin@2f30.org>
+
+	* ratox.c: Allow empty names
+
+2014-09-30  sin <sin@2f30.org>
+
+	* ratox.c: Remove FRIENDNAME macro and refactor code
+
+2014-09-30  sin <sin@2f30.org>
+
+	* ratox.c: Print filename in file_pending
+
+2014-09-30  sin <sin@2f30.org>
+
+	* README: Add contact info in README
+
+2014-09-29  sin <sin@2f30.org>
+
+	* ratox.c: Staticise fiforeset()
+
+2014-09-29  sin <sin@2f30.org>
+
+	* config.mk: Initial release 0.1
+
+2014-09-29  FRIGN <dev@frign.de>
+
+	* ratox.c: Define FRIENDNAME-Macro for repetitive idiom and fill up the missing cases.
+
+2014-09-29  sin <sin@2f30.org>
+
+	* ratox.c: Remember volatile
+
+2014-09-29  sin <sin@2f30.org>
+
+	* readpassphrase.c: BSD style def
+
+2014-09-29  FRIGN <dev@frign.de>
+
+	* ratox.c: Small refactor in printrat() Don't use 3 printf's when 1 is possible.
+
+2014-09-29  FRIGN <dev@frign.de>
+
+	* ratox.c: Implement fiforeset() and use it to create FIFOs by not closing the passed fd when it is
+	-1.  To prevent stdin from being closed, we could think about
+	changing the condition to if(*fd > 0).
+
+2014-09-29  sin <sin@2f30.org>
+
+	* ratox.c: Use PIPE_BUF instead of BUFSIZ for fifo reads
+
+2014-09-27  sin <sin@2f30.org>
+
+	* ratox.c: Clear fd status when we are done to avoid double
+	initiation
+
+2014-09-27  sin <sin@2f30.org>
+
+	* README: Update README
+
+2014-09-27  sin <sin@2f30.org>
+
+	* README: Update README
+
+2014-09-27  FRIGN <dev@frign.de>
+
+	* ratox.c: Unified log-format
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: Cancel rx transfer if we fail to accept it for whatever
+	reason
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: No need to open for writing
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: Rename RX/TX to Rx/Tx
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: Make stdout unbuffered as early as possible
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: Just flag the signal, nothing more
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: Default perms for directories should be 0777 A umask of 022 gives us 0755.
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: Fix error message
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: Style fix
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: More tight error checking
+
+2014-09-26  sin <sin@2f30.org>
+
+	* README: Update README
+
+2014-09-26  sin <sin@2f30.org>
+
+	* TODO: Remove implemented items from TODO
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: Replace all perror() with eprintf() calls
+
+2014-09-26  sin <sin@2f30.org>
+
+	* Makefile, eprintf.c, ratox.c, util.h: Add eprintf.c
+
+2014-09-26  sin <sin@2f30.org>
+
+	* ratox.c: Check return value of tox_new()
+
+2014-09-25  FRIGN <dev@frign.de>
+
+	* ratox.c: Code cleanup Rename variables to be clearer about what they do, avoid hungarian
+	notation (namestr -> name).  f->fid was quite confusing (is it the
+	tox-id, id-string or friendnumber?).  f->num is much clearer. Same
+	applies to all callback- functions (fid -> frnum).  The separation of Tx and Rx is completed by separating tx- and
+	rx-state.  Also fixed a strange portion where an active receive-state was
+	checked by looking at the file-number. use the rxstate for that.
+
+2014-09-25  FRIGN <dev@frign.de>
+
+	* ratox.c: Add ratox-rat as ASCII-logo and print the current version in its ear.
+
+2014-09-25  sin <sin@2f30.org>
+
+	* ratox.c: Flag transfer completion by changing state
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Style fix
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Use unbuffered stdout
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Cancel transfers unconditionally if we lose connection
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: File transfer fixes
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Cancel transfers when we come back after losing
+	connectivity to the DHT
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Handle partial writes
+
+2014-09-24  sin <sin@2f30.org>
+
+	* TODO: Update TODO
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Do it in the same order as in cancelrxtransfer()
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Keep trying to write until we succeed
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Ignore SIGPIPE and only cancel on EPIPE
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Only poll the file descriptors we added to the set
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Split canceltransfer() to cancel{tx,rx}transfer()
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Inform the user when we cancel pending transfers
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Rename recvfilepending to recvfileactive
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Cancel pending transfers
+
+2014-09-24  sin <sin@2f30.org>
+
+	* ratox.c: Style fix for comments
+
+2014-09-24  sin <sin@2f30.org>
+
+	* README, ratox.c: Add support for receiving files
+
+2014-09-23  sin <sin@2f30.org>
+
+	* LICENSE: Change license to ISC - equivalent to MIT/X
+
+2014-09-23  sin <sin@2f30.org>
+
+	* config.def.h: Style fix
+
+2014-09-23  sin <sin@2f30.org>
+
+	* README: Update README
+
+2014-09-23  sin <sin@2f30.org>
+
+	* ratox.c: Cancel transfer first, then remove files (we need the fd)
+
+2014-09-23  sin <sin@2f30.org>
+
+	* ratox.c: Post a KILL when cancelling transfers
+
+2014-09-23  sin <sin@2f30.org>
+
+	* ratox.c: Remove useless { }
+
+2014-09-23  sin <sin@2f30.org>
+
+	* ratox.c: Cancel transfers properly
+
+2014-09-23  sin <sin@2f30.org>
+
+	* README: Message splitting already works
+
+2014-09-23  sin <sin@2f30.org>
+
+	* README: We support utf-8
+
+2014-09-23  sin <sin@2f30.org>
+
+	* README: Add section on portability
+
+2014-09-23  sin <sin@2f30.org>
+
+	* README: We have proxy support, update README
+
+2014-09-23  sin <sin@2f30.org>
+
+	* README: Add README
+
+2014-09-23  sin <sin@2f30.org>
+
+	* ratox.c: We need to force TCP mode when using the proxy
+
+2014-09-23  sin <sin@2f30.org>
+
+	* config.def.h, ratox.c: Add proxy support (Remove tcpenabled from config.def.h as it can easily be flipped at
+	runtime via the cmdline switch).
+
+2014-09-23  sin <sin@2f30.org>
+
+	* config.def.h, ratox.c: Add TCP mode
+
+2014-09-23  FRIGN <dev@frign.de>
+
+	* ratox.c: Refactor data-structures
+
+2014-09-23  sin <sin@2f30.org>
+
+	* ratox.c: Scream if the datafile has 0 length
+
+2014-09-23  sin <sin@2f30.org>
+
+	* TODO: Add TODO
+
+2014-09-23  sin <sin@2f30.org>
+
+	* ratox.c: Add frienddestroy() and refactor removefriend() friendcreate() populates the fs, frienddestroy() removes the friend
+	related files from the fs.  removefriend() only acts on the data from the friend's remove fifo.
+	The "callback" in this case is responsible for reading the fifo like
+	in all other cases (sendfriendtext() etc.).  No weird dance with special function arguments to flag "official"
+	removal.  All friend related "callbacks" just need to operate on a
+	struct friend *.
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Use fsync() on fd in datasave()
+
+2014-09-22  FRIGN <dev@frign.de>
+
+	* ratox.c: Refactor removefriend()
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Add support for removing friends
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Dump our status message in the status/out file not our
+	nickname
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Use number of seconds since epoch as a timestamp for
+	naming files uniquely This breaks if time travel becomes a possibility.
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Use O_RDONLY when opening the datafile
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Remeber to truncate datafile in datasave() in case it
+	shrinks
+
+2014-09-22  FRIGN <dev@frign.de>
+
+	* ratox.c: Change datasave() and localinit() to use fd's instead of
+	fp's
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Print message before password prompt
+
+2014-09-22  FRIGN <dev@frign.de>
+
+	* ratox.c: Refactor dataload() Use fd's instead of fp's and simplify the case-handling for
+	encryption.
+
+2014-09-22  FRIGN <dev@frign.de>
+
+	* ratox.c: Refactor fifoflush() After the previous simplification of return-values of fiforead()
+	(exit if there's a more serious issue), fifoflush() can easily be
+	replaced with a oneliner calling fiforead until it returns 0.  In
+	case 0 is returned, the underlying fifo will have already been
+	reopened.
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Style fix
+
+2014-09-22  sin <sin@2f30.org>
+
+	* config.def.h: Forgot config.def.h
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Rename encryptsave to encryptdatafile
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Allow to encrypt a plain text data file and vice versa
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Inform the user if encryption is enabled but the datafile
+	is not encrypted
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Print a newline between the banner and the rest
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Allow a client with encrypted support to load non-encrypt
+	datafiles
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Just realloc(), don't leak if we get called more than
+	once
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Oops
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Just check p[0]
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Forbid empty passwords, keep looping
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Make sure to report when .ratox.data doesn't match our
+	encryption config
+
+2014-09-22  sin <sin@2f30.org>
+
+	* ratox.c: Keep asking for password if it doesn't match
+
+2014-09-22  sin <sin@2f30.org>
+
+	* readpassphrase.c: Use portable readpassphrase() from OpenSSH
+
+2014-09-22  sin <sin@2f30.org>
+
+	* Makefile: Generate config.h
+
+2014-09-22  sin <sin@2f30.org>
+
+	* Makefile, config.def.h, config.mk, ratox.c, readpassphrase.c,
+	readpassphrase.h: Add support for encrypted save files
+
+2014-09-21  sin <sin@2f30.org>
+
+	* ratox.c: Add IPv6 support Default to IPv4.
+
+2014-09-21  sin <sin@2f30.org>
+
+	* config.def.h, ratox.c: Lay the ground for IPv6 support
+
+2014-09-21  sin <sin@2f30.org>
+
+	* config.def.h, ratox.c: Update nodelist
+
+2014-09-21  sin <sin@2f30.org>
+
+	* ratox.c: Only close file descriptors when they are not -1
+
+2014-09-21  FRIGN <dev@frign.de>
+
+	* ratox.c: Add shutdown() for clean exit This also sends a broadcast to all friends you went offline, leading
+	to an immediate event-feedback.
+
+2014-09-20  sin <sin@2f30.org>
+
+	* ratox.c: fiforead() should accept a void * instead of char * Remove ugly casts.
+
+2014-09-20  sin <sin@2f30.org>
+
+	* ratox.c: Fix off-by-one bugs when calling fiforead() dirfd should be the first arg to be consistent with other functions.
+
+2014-09-20  FRIGN <dev@frign.de>
+
+	* ratox.c: Refactor sendfriendreq() Put the error-strings in one single data-structure and flush the
+	err-file every time before a new incoming request, so it's empty
+	when the request succeeds.
+
+2014-09-20  FRIGN <dev@frign.de>
+
+	* ratox.c: Implement fiforead() fiforead() automatically reopens a file-descriptor in case it
+	returns EOF (return 0).  It returns -1 on error.
+
+2014-09-19  sin <sin@2f30.org>
+
+	* ratox.c: Initialize fdmax
+
+2014-09-19  sin <sin@2f30.org>
+
+	* ratox.c: Factor out fifoflush() in a separate func Also flush the fifo for stalled transfers
+
+2014-09-19  FRIGN <dev@frign.de>
+
+	* ratox.c: Clear up the enums and fix implicit condition-bug The OUT_F-type was not clear. Make it easier to see the out-file has
+	no state (=NONE) and is defined for each slot individually.  Moreover, in the initial creation, the err-file fell through just
+	because STATIC = 0 and .outfile wasn't defined for it.  It was only coincidence this worked and now we have a much more
+	bulletproof implementation.
+
+2014-09-19  sin <sin@2f30.org>
+
+	* ratox.c: Handle rejected transfers
+
+2014-09-19  sin <sin@2f30.org>
+
+	* ratox.c: Fix PAUSE/RESUME in file transfers The doc lies, if the receiver resumes a transfer you get a control
+	packet with send_receive == 1 and control_type ==
+	TOX_FILECONTROL_ACCEPT.  We keep state locally and move from PAUSED to INPROGRESS when the
+	above happens.
+
+2014-09-19  sin <sin@2f30.org>
+
+	* ratox.c: Add TRANSFER_PAUSED state Doesn't quite work yet though.
+
+2014-09-19  sin <sin@2f30.org>
+
+	* ratox.c: Inform the user when a transfer is in progress
+
+2014-09-19  sin <sin@2f30.org>
+
+	* ratox.c: Fix file transfers + texting to use O_RDONLY for FIFOs Just re-open them to clear EOF.
+
+2014-09-18  FRIGN <dev@frign.de>
+
+	* ratox.c: Change global in-fifos from O_RDWR to O_RDONLY O_RDWR is a dirty hack to get around the issue of infinite EOFs
+	while reading an in-FIFO.  Instead, stop breaking POSIX and set the
+	FIFOs to O_RDONLY.  In case a read returns EOF (r == 0), we reopen the fd.  Same will be applied to the friend-fifos (especially file_in),
+	helping us get rid of strange timeouts and heuristics and rather
+	solve the problem the POSIX-way.  The only downside to this is that we are blind for writes to the
+	in-FIFOs between catching read == 0 and close(), but this is not an
+	issue.  To make reopening as easy as possible, I added a dirfd to all slots.
+	While at it, I changed the initial setup and removed the chdir() in
+	favor of the POSIX-2008-compliant *at-functions.  This lets us do
+	stuff without having to use snprintf to build paths and is more
+	bulletproof even in case the directory is renamed.
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: Missed some more
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: No need to specify modes, default to 0644 and 0777
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: OUT_F is reserved for the edge-case where we don't know
+	if OUT is a STATIC or FOLDER So use STATIC here.
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: Print a message when we reject a friend request
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: Allow the user to reject a friend request
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: We need O_WRONLY for text_out as well
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: Remember to ftruncate() before updating the files
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: Remove writeline()
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: We can't use TAILQ_REMOVE inside TAILQ_FOREACH
+
+2014-09-18  FRIGN <dev@frign.de>
+
+	* ratox.c: Add fifos for incoming requests and remove cmd-parser
+
+2014-09-18  sin <sin@2f30.org>
+
+	* ratox.c: Rework file-transfers For aborted transfers, we will have to move the transfer to the
+	TRANSFER_KILLED state.  Then we'll have to wait until the input FIFO
+	stops being readable (the user ^C the transfer).  Only then can we
+	move to TRANSFER_NONE.  If we move to TRANSFER_NONE immediately then we will initiate a new
+	transfer which we don't want to do.  The basic idea is: If we move into the TRANSFER_KILLED state and timeout has expired
+	(50ms?) without the fd being readable (the user did a ^C on cat file
+	> file_in) then move the transfer to TRANSFER_NONE state.
+
+2014-09-17  FRIGN <dev@frign.de>
+
+	* ratox.c: Fix wall of gcc-warnings
+
+2014-09-17  sin <sin@2f30.org>
+
+	* Makefile, config.mk, ratatox.c, ratox.c: Rename ratatox to ratox
+
+2014-09-17  sin <sin@2f30.org>
+
+	* ratatox.c: Save state to `.ratatox.data' Makes it a bit more difficult to accidentally delete it and the user
+	can't really interact with it so make it hidden.
+
+2014-09-17  sin <sin@2f30.org>
+
+	* ratatox.c: Fix FIFO craziness
+
+2014-09-17  sin <sin@2f30.org>
+
+	* ratatox.c: Fix select() spin
+
+2014-09-17  sin <sin@2f30.org>
+
+	* ratatox.c: Ensure proper permissions on request/out
+
+2014-09-17  sin <sin@2f30.org>
+
+	* ratatox.c: Remember to ftruncate() before dprintf()
+
+2014-09-17  FRIGN <dev@frign.de>
+
+	* ratatox.c: Rework data-structures
+
+2014-09-17  sin <sin@2f30.org>
+
+	* ratatox.c: It is text_out not textout
+
+2014-09-17  sin <sin@2f30.org>
+
+	* ratatox.c: Use upper-case when printing IDs
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Catch TOX_FAERR_{BADCHECKSUM,SETNEWNOSPAM}
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Add FIFO for sending a friend request
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Rename functions to keep style consistent
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Add comment like we do for the name and id
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Add support for changing the status message
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Make writeline() more generic
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Make callbacks more generic
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Start using callbacks to make the main loop less ugly
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Name setting and printing the ID are now exposed via
+	the fs We will gradually expose the other commands as well.
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: When initiating a transfer, print the nickname of the
+	friend
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Print message when transfers start
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Detect and cleanup stale transfers
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Only monitor FIFOs for friends that are online Side-effect: If you send a file to a friend that is offline, the
+	write will block() until the friend comes online at which point the
+	file transfer will begin.
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Correctly terminate transfers
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Remember to free the buffers
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Clean up send_friend_file()
+
+2014-09-16  sin <sin@2f30.org>
+
+	* LICENSE: Add Laslo Hunhold <dev@frign.de> to LICENSE
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Correctly inform the user when the transfer is complete
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Only attempt to send a queued transfer when it is
+	pending
+
+2014-09-16  sin <sin@2f30.org>
+
+	* ratatox.c: Implement file sending Initially based on a commit by FRIGN.
+
+2014-09-15  sin <sin@2f30.org>
+
+	* config.mk, ratatox.c: Pass -DVERSION=\"${VERSION}\" and use that
+	when printing the rat
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Rename printbanner() to printrat()
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Inform the user of the help cmd
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Avoid blank nicknames when printing
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: For now print messages on the main screen too
+
+2014-09-15  sin <sin@2f30.org>
+
+	* config.def.h, ratatox.c: Rename bootstrapnode to node
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Correctly track connected state variable
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Add user status callback
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Fix message
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Rename do*() to cmd*()
+
+2014-09-15  sin <sin@2f30.org>
+
+	* arg.h, ratatox.c: Add arg.h
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Add timestamps for incoming messages We should tweak the time format.
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Fix one more warning
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Fix more warnings
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Fix warnings and rename blabla() to writeparam()
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Use EXIT_FAILURE and EXIT_SUCCESS
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Timestamp some messages
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Color banner
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Print banner
+
+2014-09-15  sin <sin@2f30.org>
+
+	* config.mk, ratatox.c: Remove unused symbols
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Fix off-by-one
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Cleanup
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Create all friend files at load time
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Create files even if the friend is not yet in our list
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Squash together retarded conditional
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Dump name and statusmsg on conn status When a friend comes online, dump name + conn status
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: friendcreate() should return a pointer to the friend
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Add wrapper for writing to id/XXX files
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Add <id>/online 0 when friend is offline, 1 otherwise.
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Rename status file to statusmsg Status is received for the actual status (none, away and busy).
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Fix typo
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Save friends too
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Just a hack for now, strip the training newline if any
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Don't set a fixed name at init time tox_load() handles that and gives us our last nickname.
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Touch text_out at init time
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Add commands to change name and print current ID
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: When we hit an unknown command inform the user of the
+	help command
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Errors go to stderr
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Capitalize string in output
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Rename `helpstr' to `usage'
+
+2014-09-15  sin <sin@2f30.org>
+
+	* ratatox.c: Add command infrastructure
+
+2014-09-13  sin <sin@2f30.org>
+
+	* ratatox.c: Dump output to master.out by default Errors go to stderr.  Simply tail -f master.out.
+
+2014-09-13  sin <sin@2f30.org>
+
+	* Makefile, config.def.h, config.mk, ratatox.c: Add Makefile +
+	config.mk + config.def.h
+
+2014-09-13  sin <sin@2f30.org>
+
+	* LICENSE, ratatox.c: Add LICENSE
+
+2014-09-13  sin <sin@2f30.org>
+
+	* ratatox.c: text_out should be in the same dir as text_in Thanks unknown person.
+
+2014-09-13  sin <sin@2f30.org>
+
+	* ratatox.c: Add missing break
+
+2014-09-13  sin <sin@2f30.org>
+
+	* ratatox.c: Style fix
+
+2014-09-13  sin <sin@2f30.org>
+
+	* ratatox.c: Statically init friend head
+
+2014-09-13  sin <sin@2f30.org>
+
+	* ratatox.c: Rename data file to ratatox.data
+
+2014-09-13  sin <sin@2f30.org>
+
+	* Initial commit
+

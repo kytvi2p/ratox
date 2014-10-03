@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_installchangelogs:
+	# upstream changelog should be recreated using git2cl
+	# whenever the upstream source is pulled from git
+	dh_installchangelogs debian/upstream.changelog
+	dh_installchangelogs
