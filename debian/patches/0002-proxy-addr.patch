@@ -9,11 +9,9 @@ by -p defaulting to Tor.
  config.def.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/config.def.h b/config.def.h
-index 0a42a24..e61c8a8 100644
 --- a/config.def.h
 +++ b/config.def.h
-@@ -6,8 +6,8 @@
+@@ -8,8 +8,8 @@
  
  static int encryptdatafile = 0;
  
