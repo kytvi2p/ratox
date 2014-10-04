@@ -1,3 +1,21 @@
+ratox (0.1+20141004.1-1) unstable; urgency=medium
+
+  [ sin ]
+  * Default to 0666 perms
+  * Bring connection delay down to 3s
+
+  [ FRIGN ]
+  * Add initial outgoing call-support
+
+  [ sin ]
+  * Minor stylistic changes
+  * Update README
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sat, 04 Oct 2014 13:02:50 +0000
+
 ratox (0.1+20141003.1-1~deb7u+1) stable; urgency=medium
 
   * Backport to Wheezy
