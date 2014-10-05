@@ -1,3 +1,25 @@
+2014-10-04  sin <sin@2f30.org>
+
+	* README: Update README
+
+2014-10-04  sin <sin@2f30.org>
+
+	* ratox.c: Minor stylistic changes
+
+2014-10-04  FRIGN <dev@frign.de>
+
+	* config.def.h, ratox.c: Add initial outgoing call-support This works, but the audio is a bit muffled up, which takes some
+	fine-tuning.  Also, not all state-transitions are yet taken into
+	account.
+
+2014-10-03  sin <sin@2f30.org>
+
+	* config.def.h: Bring connection delay down to 3s
+
+2014-10-03  sin <sin@2f30.org>
+
+	* ratox.c: Default to 0666 perms
+
 2014-10-03  sin <sin@2f30.org>
 
 	* config.def.h: Up max calls to 8 after discussion with other tox
