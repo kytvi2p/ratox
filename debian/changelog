@@ -1,14 +1,14 @@
+ratox (0.1+20141005.1-2~deb7u+1) stable; urgency=medium
+
+  * Backport to Wheezy
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 06 Oct 2014 01:19:25 +0000
+
 ratox (0.1+20141005.1-2) unstable; urgency=medium
 
   * Fix compilation on raspberrypi
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 06 Oct 2014 01:18:35 +0000
-
-ratox (0.1+20141005.1-1~deb7u+1) stable; urgency=medium
-
-  * Backport to Wheezy
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 06 Oct 2014 00:59:21 +0000
 
 ratox (0.1+20141005.1-1) unstable; urgency=medium
 
