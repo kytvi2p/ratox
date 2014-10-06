@@ -197,11 +197,11 @@ static void printrat(void);
 static void printout(const char *, ...);
 static void fiforeset(int, int *, struct file);
 static ssize_t fiforead(int, int *, struct file, void *, size_t);
+static void cbcallinvite(void *, int32_t, void *);
 static void cbcallstarted(void *, int32_t, void *);
 static void cbcallcancelled(void *, int32_t, void *);
 static void cbcallrejected(void *, int32_t, void *);
 static void cbcallended(void *, int32_t, void *);
-static void cbcallinvite(void *, int32_t, void *);
 static void cbcallringing(void *, int32_t, void *);
 static void preparetxcall(struct friend *);
 static void cbcallstarting(void *, int32_t, void *);
@@ -466,7 +466,7 @@ cbcallstarting(void *av, int32_t cnum, void *udata)
 	if (!f)
 		return;
 
-	printout(" : %s : Tx AV > Started\n", f->name);
+	printout(": %s : Tx AV > Started\n", f->name);
 	preparetxcall(f);
 	toxav_prepare_transmission(toxav, cnum, av_jbufdc, av_VADd, 0);
 }
@@ -586,6 +586,7 @@ sendfriendcalldata(struct friend *f)
 		     framesize * sizeof(int16_t) - f->av.incompleteframe * f->av.n);
 	if (n == 0) {
 		toxav_hangup(toxav, f->av.num);
+		f->av.state = av_CallNonExistant;
 		return;
 	} else if (n == -1) {
 		return;
@@ -1646,8 +1647,6 @@ loop(void)
 		TAILQ_FOREACH(f, &friendhead, entry) {
 			if (tox_get_friend_connection_status(tox, f->num) == 0)
 				continue;
-			if (f->av.state != av_CallStarting)
-				continue;
 			if (f->fd[FCALL_OUT] == -1) {
 				r = openat(f->dirfd, ffiles[FCALL_OUT].name,
 					   ffiles[FCALL_OUT].flags, 0666);
@@ -1656,7 +1655,8 @@ loop(void)
 						eprintf("openat %s:", ffiles[FCALL_OUT].name);
 				} else {
 					f->fd[FCALL_OUT] = r;
-					toxav_answer(toxav, f->av.num, &toxavconfig);
+					if (f->av.state == av_CallStarting)
+						toxav_answer(toxav, f->av.num, &toxavconfig);
 				}
 			}
 		}
