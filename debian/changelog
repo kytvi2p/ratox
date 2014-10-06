@@ -1,3 +1,9 @@
+ratox (0.1+20141005.1-1ubuntu1) trusty; urgency=medium
+
+  * Upload to PPA
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 06 Oct 2014 01:00:15 +0000
+
 ratox (0.1+20141005.1-1) unstable; urgency=medium
 
   [ FRIGN ]
@@ -22,12 +28,6 @@ ratox (0.1+20141005.1-1) unstable; urgency=medium
   * update upstream changelog with git2cl
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 06 Oct 2014 00:50:38 +0000
-
-ratox (0.1+20141004.1-1ubuntu1) trusty; urgency=medium
-
-  * Upload to PPA
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Sat, 04 Oct 2014 13:48:15 +0000
 
 ratox (0.1+20141004.1-1) unstable; urgency=medium
 
