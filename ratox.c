@@ -153,6 +153,7 @@ struct call {
 	uint8_t payload[RTP_PAYLOAD_SIZE];
 	ssize_t n;
 	int incompleteframe;
+	struct timespec lastsent;
 };
 
 struct friend {
@@ -191,6 +192,7 @@ static int ipv6;
 static int tcpflag;
 static int proxyflag;
 
+static struct timespec timediff(struct timespec, struct timespec);
 static void printrat(void);
 static void printout(const char *, ...);
 static void fiforeset(int, int *, struct file);
@@ -201,6 +203,7 @@ static void cbcallrejected(void *, int32_t, void *);
 static void cbcallended(void *, int32_t, void *);
 static void cbcallinvite(void *, int32_t, void *);
 static void cbcallringing(void *, int32_t, void *);
+static void preparetxcall(struct friend *);
 static void cbcallstarting(void *, int32_t, void *);
 static void cbcallending(void *, int32_t, void *);
 static void cbreqtimeout(void *, int32_t, void *);
@@ -239,6 +242,23 @@ static void loop(void);
 static void initshutdown(int);
 static void shutdown(void);
 static void usage(void);
+
+static struct timespec
+timediff(struct timespec t1, struct timespec t2)
+{
+	struct timespec tmp;
+
+	tmp.tv_sec = t2.tv_sec - t1.tv_sec;
+
+	if ((t2.tv_nsec - t1.tv_nsec) > 0) {
+		tmp.tv_nsec = (t2.tv_nsec - t1.tv_nsec);
+	} else {
+		tmp.tv_nsec = 1E9 - (t1.tv_nsec - t2.tv_nsec);
+		tmp.tv_sec--;
+	}
+
+	return tmp;
+}
 
 static void
 printrat(void)
@@ -423,6 +443,19 @@ cbcallringing(void *av, int32_t cnum, void *udata)
 }
 
 static void
+preparetxcall(struct friend *f)
+{
+	f->av.frame = malloc(sizeof(int16_t) * framesize);
+	if (!f->av.frame)
+		eprintf("malloc:");
+	f->av.n = 0;
+	f->av.incompleteframe = 0;
+	f->av.lastsent.tv_sec = 0;
+	f->av.lastsent.tv_nsec = 0;
+	f->av.state = av_CallActive;
+}
+
+static void
 cbcallstarting(void *av, int32_t cnum, void *udata)
 {
 	struct friend *f;
@@ -434,13 +467,7 @@ cbcallstarting(void *av, int32_t cnum, void *udata)
 		return;
 
 	printout(" : %s : Tx AV > Started\n", f->name);
-
-	f->av.frame = malloc(sizeof(int16_t) * framesize);
-	if (!f->av.frame)
-		eprintf("malloc:");
-	f->av.n = 0;
-	f->av.incompleteframe = 0;
-	f->av.state = av_CallActive;
+	preparetxcall(f);
 	toxav_prepare_transmission(toxav, cnum, av_jbufdc, av_VADd, 0);
 }
 
@@ -549,13 +576,17 @@ static void
 sendfriendcalldata(struct friend *f)
 {
 	ssize_t n, payloadsize;
+	struct timespec now, diff;
+
+	if (!f->av.frame)
+		preparetxcall(f);
 
 	n = fiforead(f->dirfd, &f->fd[FCALL_IN], ffiles[FCALL_IN],
 		     f->av.frame + f->av.incompleteframe * f->av.n,
 		     framesize * sizeof(int16_t) - f->av.incompleteframe * f->av.n);
 	if (n == 0) {
-		memset(f->av.frame + f->av.incompleteframe * f->av.n, 0,
-		       framesize * sizeof(int16_t) - f->av.incompleteframe * f->av.n);
+		toxav_hangup(toxav, f->av.num);
+		return;
 	} else if (n == -1) {
 		return;
 	} else if (n == (framesize * sizeof(int16_t) - f->av.incompleteframe * f->av.n)) {
@@ -572,16 +603,14 @@ sendfriendcalldata(struct friend *f)
 	if (payloadsize < 0)
 		eprintf("failed to encode payload\n");
 
-	toxav_send_audio(toxav, f->av.num, f->av.payload, payloadsize);
-
-	if (n == 0) {
-		cancelrxcall(f, "Ended");
-		canceltxcall(f, "Ended");
-		toxav_kill_transmission(toxav, f->av.num);
-		toxav_hangup(toxav, f->av.num);
-		f->av.state = av_CallNonExistant;
-		return;
+	clock_gettime(CLOCK_MONOTONIC, &now);
+	diff = timediff(f->av.lastsent, now);
+	if (diff.tv_sec == 0 && diff.tv_nsec < toxavconfig.audio_frame_duration * 1E6) {
+		diff.tv_nsec = toxavconfig.audio_frame_duration * 1E6 - diff.tv_nsec;
+		nanosleep(&diff, NULL);
 	}
+	clock_gettime(CLOCK_MONOTONIC, &f->av.lastsent);
+	toxav_send_audio(toxav, f->av.num, f->av.payload, payloadsize);
 }
 
 static void
@@ -1300,7 +1329,6 @@ friendcreate(int32_t frnum)
 	ftruncate(f->fd[FCALL_PENDING], 0);
 	dprintf(f->fd[FCALL_PENDING], "0\n");
 
-	free(f->av.frame);
 	f->av.state = av_CallNonExistant;
 	f->av.num = -1;
 
@@ -1316,8 +1344,11 @@ frienddestroy(struct friend *f)
 
 	canceltxtransfer(f);
 	cancelrxtransfer(f);
-	if (f->av.state != av_CallNonExistant)
+	if (f->av.state != av_CallNonExistant) {
+		cancelrxcall(f, "Destroying");
+		canceltxcall(f, "Destroying");
 		toxav_kill_transmission(toxav, f->av.num);
+	}
 	for (i = 0; i < LEN(ffiles); i++) {
 		if (f->dirfd != -1) {
 			unlinkat(f->dirfd, ffiles[i].name, 0);

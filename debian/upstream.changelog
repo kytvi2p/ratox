@@ -1,3 +1,59 @@
+2014-10-05  sin <sin@2f30.org>
+
+	* ratox.c: Factor out check for NULL frame
+
+2014-10-05  sin <sin@2f30.org>
+
+	* ratox.c: Allow simultaneous tx/rx call
+
+2014-10-05  sin <sin@2f30.org>
+
+	* ratox.c: Clean up calls on shutdown
+
+2014-10-05  sin <sin@2f30.org>
+
+	* ratox.c: Properly hang up initiating calls
+
+2014-10-05  FRIGN <dev@frign.de>
+
+	* ratox.c: Fix timing issue I don't know why I missed that 1) of course we have to check tv_sec, not tv_nsec 2) when we do a nanosleep, but use the "now"-val for the lastsent-    time, we obviously keep the wrong time.     This leads to the program thinking more time elapsed than really    has, leading to less nanosleep and thus higher playback-speed.  Now this is fixed, and apart from state-transition issues,
+	call-receiving now works perfectly. ;)
+
+2014-10-05  FRIGN <dev@frign.de>
+
+	* ratox.c: Fix units (us -> ms) Got off a factor of a thousand, this would've never worked.  Now it
+	should handle the calls properly.
+
+2014-10-05  sin <sin@2f30.org>
+
+	* ratox.c: Style fix
+
+2014-10-05  FRIGN <dev@frign.de>
+
+	* ratox.c: Add sample-timer for calls
+
+2014-10-04  sin <sin@2f30.org>
+
+	* README: Update README
+
+2014-10-04  sin <sin@2f30.org>
+
+	* ratox.c: Minor stylistic changes
+
+2014-10-04  FRIGN <dev@frign.de>
+
+	* config.def.h, ratox.c: Add initial outgoing call-support This works, but the audio is a bit muffled up, which takes some
+	fine-tuning.  Also, not all state-transitions are yet taken into
+	account.
+
+2014-10-03  sin <sin@2f30.org>
+
+	* config.def.h: Bring connection delay down to 3s
+
+2014-10-03  sin <sin@2f30.org>
+
+	* ratox.c: Default to 0666 perms
+
 2014-10-03  sin <sin@2f30.org>
 
 	* config.def.h: Up max calls to 8 after discussion with other tox
