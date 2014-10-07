@@ -1,3 +1,13 @@
+ratox (0.1+20141007.2~gitc81b37e-1) unstable; urgency=medium
+
+  [ sin ]
+  * Allocate enough memory to allow copying all the friends
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Tue, 07 Oct 2014 01:15:33 +0000
+
 ratox (0.1+20141007.1~git4292294-1~deb7u+1) stable; urgency=medium
 
   * Backport to Wheezy
