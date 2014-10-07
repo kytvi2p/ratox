@@ -1,5 +1,9 @@
 2014-10-07  sin <sin@2f30.org>
 
+	* ratox.c: Allocate enough memory to allow copying all the friends
+
+2014-10-07  sin <sin@2f30.org>
+
 	* config.mk: Revert accidental modification to config.mk
 
 2014-10-07  sin <sin@2f30.org>
