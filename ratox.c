@@ -197,11 +197,11 @@ static void printrat(void);
 static void printout(const char *, ...);
 static void fiforeset(int, int *, struct file);
 static ssize_t fiforead(int, int *, struct file, void *, size_t);
+static void cbcallinvite(void *, int32_t, void *);
 static void cbcallstarted(void *, int32_t, void *);
 static void cbcallcancelled(void *, int32_t, void *);
 static void cbcallrejected(void *, int32_t, void *);
 static void cbcallended(void *, int32_t, void *);
-static void cbcallinvite(void *, int32_t, void *);
 static void cbcallringing(void *, int32_t, void *);
 static void preparetxcall(struct friend *);
 static void cbcallstarting(void *, int32_t, void *);
@@ -369,6 +369,7 @@ cbcallinvite(void *av, int32_t cnum, void *udata)
 		 f->name, avconfig.audio_sample_rate, avconfig.audio_channels);
 
 	ftruncate(f->fd[FCALL_PENDING], 0);
+	lseek(f->fd[FCALL_PENDING], 0, SEEK_SET);
 	dprintf(f->fd[FCALL_PENDING], "1\n");
 
 	f->av.state = av_CallStarting;
@@ -466,7 +467,7 @@ cbcallstarting(void *av, int32_t cnum, void *udata)
 	if (!f)
 		return;
 
-	printout(" : %s : Tx AV > Started\n", f->name);
+	printout(": %s : Tx AV > Started\n", f->name);
 	preparetxcall(f);
 	toxav_prepare_transmission(toxav, cnum, av_jbufdc, av_VADd, 0);
 }
@@ -558,6 +559,7 @@ cancelrxcall(struct friend *f, char *action)
 		f->fd[FCALL_OUT] = -1;
 	}
 	ftruncate(f->fd[FCALL_PENDING], 0);
+	lseek(f->fd[FCALL_PENDING], 0, SEEK_SET);
 	dprintf(f->fd[FCALL_PENDING], "0\n");
 }
 
@@ -586,6 +588,7 @@ sendfriendcalldata(struct friend *f)
 		     framesize * sizeof(int16_t) - f->av.incompleteframe * f->av.n);
 	if (n == 0) {
 		toxav_hangup(toxav, f->av.num);
+		f->av.state = av_CallNonExistant;
 		return;
 	} else if (n == -1) {
 		return;
@@ -635,6 +638,7 @@ cbconnstatus(Tox *m, int32_t frnum, uint8_t status, void *udata)
 	TAILQ_FOREACH(f, &friendhead, entry) {
 		if (f->num == frnum) {
 			ftruncate(f->fd[FONLINE], 0);
+			lseek(f->fd[FONLINE], 0, SEEK_SET);
 			dprintf(f->fd[FONLINE], "%d\n", status);
 			return;
 		}
@@ -711,6 +715,7 @@ cbnamechange(Tox *m, int32_t frnum, const uint8_t *data, uint16_t len, void *use
 			if (memcmp(f->name, name, len + 1) == 0)
 				break;
 			ftruncate(f->fd[FNAME], 0);
+			lseek(f->fd[FNAME], 0, SEEK_SET);
 			dprintf(f->fd[FNAME], "%s\n", name);
 			printout(": %s : Name > %s\n", f->name, name);
 			memcpy(f->name, name, len + 1);
@@ -732,6 +737,7 @@ cbstatusmessage(Tox *m, int32_t frnum, const uint8_t *data, uint16_t len, void *
 	TAILQ_FOREACH(f, &friendhead, entry) {
 		if (f->num == frnum) {
 			ftruncate(f->fd[FSTATUS], 0);
+			lseek(f->fd[FSTATUS], 0, SEEK_SET);
 			dprintf(f->fd[FSTATUS], "%s\n", status);
 			printout(": %s : Status > %s\n", f->name, status);
 			break;
@@ -825,6 +831,7 @@ cbfilecontrol(Tox *m, int32_t frnum, uint8_t rec_sen, uint8_t fnum, uint8_t ctrl
 				f->fd[FFILE_OUT] = -1;
 			}
 			ftruncate(f->fd[FFILE_PENDING], 0);
+			lseek(f->fd[FFILE_PENDING], 0, SEEK_SET);
 			f->rxstate = TRANSFER_NONE;
 		}
 		break;
@@ -860,6 +867,7 @@ cbfilesendreq(Tox *m, int32_t frnum, uint8_t fnum, uint64_t fsz,
 	}
 
 	ftruncate(f->fd[FFILE_PENDING], 0);
+	lseek(f->fd[FFILE_PENDING], 0, SEEK_SET);
 	dprintf(f->fd[FFILE_PENDING], "%s\n", filename);
 	f->rxstate = TRANSFER_INPROGRESS;
 	printout(": %s : Rx > Pending %s\n", f->name, filename);
@@ -922,6 +930,7 @@ cancelrxtransfer(struct friend *f)
 			f->fd[FFILE_OUT] = -1;
 		}
 		ftruncate(f->fd[FFILE_PENDING], 0);
+		lseek(f->fd[FFILE_PENDING], 0, SEEK_SET);
 		f->rxstate = TRANSFER_NONE;
 	}
 }
@@ -1397,6 +1406,7 @@ setname(void *data)
 	datasave();
 	printout("Name > %s\n", name);
 	ftruncate(gslots[NAME].fd[OUT], 0);
+	lseek(gslots[NAME].fd[OUT], 0, SEEK_SET);
 	dprintf(gslots[NAME].fd[OUT], "%s\n", name);
 }
 
@@ -1417,6 +1427,7 @@ setstatus(void *data)
 	datasave();
 	printout("Status > %s\n", status);
 	ftruncate(gslots[STATUS].fd[OUT], 0);
+	lseek(gslots[STATUS].fd[OUT], 0, SEEK_SET);
 	dprintf(gslots[STATUS].fd[OUT], "%s\n", status);
 }
 
@@ -1435,21 +1446,31 @@ sendfriendreq(void *data)
 		return;
 	buf[n] = '\0';
 
-	for (p = buf; *p && isspace(*p) == 0; p++)
+	/* locate start of msg */
+	for (p = buf; *p && !isspace(*p); p++)
 		;
-	if (*p != '\0') {
-		*p = '\0';
-		while (isspace(*p++) != 0)
-			;
-		if (*p != '\0')
-			msg = p;
+	if (*p == '\0')
+		goto out; /* no msg */
+	*p++ = '\0';
+	if (*p == '\0') {
+		goto out; /* no msg */
+	} else {
+		msg = p;
 		if (msg[strlen(msg) - 1] == '\n')
 			msg[strlen(msg) - 1] = '\0';
 	}
+out:
+	if (strlen(buf) != sizeof(id) * 2) {
+		ftruncate(gslots[REQUEST].fd[ERR], 0);
+		lseek(gslots[REQUEST].fd[ERR], 0, SEEK_SET);
+		dprintf(gslots[REQUEST].fd[ERR], "Invalid friend ID\n");
+		return;
+	}
 	str2id(buf, id);
 
-	r = tox_add_friend(tox, id, (uint8_t *)buf, strlen(buf));
+	r = tox_add_friend(tox, id, (uint8_t *)msg, strlen(msg));
 	ftruncate(gslots[REQUEST].fd[ERR], 0);
+	lseek(gslots[REQUEST].fd[ERR], 0, SEEK_SET);
 
 	if (r < 0) {
 		dprintf(gslots[REQUEST].fd[ERR], "%s\n", reqerr[-r]);
@@ -1487,10 +1508,12 @@ setnospam(void *data)
 	datasave();
 	printout("Nospam > %08X\n", nsval);
 	ftruncate(gslots[NOSPAM].fd[OUT], 0);
+	lseek(gslots[NOSPAM].fd[OUT], 0, SEEK_SET);
 	dprintf(gslots[NOSPAM].fd[OUT], "%08X\n", nsval);
 
 	tox_get_address(tox, address);
 	ftruncate(idfd, 0);
+	lseek(idfd, 0, SEEK_SET);
 	for (i = 0; i < TOX_FRIEND_ADDRESS_SIZE; i++)
 		dprintf(idfd, "%02X", address[i]);
 	dprintf(idfd, "\n");
@@ -1646,8 +1669,6 @@ loop(void)
 		TAILQ_FOREACH(f, &friendhead, entry) {
 			if (tox_get_friend_connection_status(tox, f->num) == 0)
 				continue;
-			if (f->av.state != av_CallStarting)
-				continue;
 			if (f->fd[FCALL_OUT] == -1) {
 				r = openat(f->dirfd, ffiles[FCALL_OUT].name,
 					   ffiles[FCALL_OUT].flags, 0666);
@@ -1656,7 +1677,8 @@ loop(void)
 						eprintf("openat %s:", ffiles[FCALL_OUT].name);
 				} else {
 					f->fd[FCALL_OUT] = r;
-					toxav_answer(toxav, f->av.num, &toxavconfig);
+					if (f->av.state == av_CallStarting)
+						toxav_answer(toxav, f->av.num, &toxavconfig);
 				}
 			}
 		}

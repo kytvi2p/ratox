@@ -4,11 +4,12 @@ Subject: default tor proxy
 
 Since my packages are generally used by I2P/Tor users, they'd probably benefit
 by -p defaulting to Tor.
-
 ---
  config.def.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/config.def.h b/config.def.h
+index 6ec04be..5a13397 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -8,8 +8,8 @@

@@ -1,3 +1,37 @@
+2014-10-07  sin <sin@2f30.org>
+
+	* config.mk: Revert accidental modification to config.mk
+
+2014-10-07  sin <sin@2f30.org>
+
+	* ratox.c: Send the actual message when initiating the friend
+	request
+
+2014-10-07  sin <sin@2f30.org>
+
+	* config.mk, ratox.c: Fix possible stack corruption when parsing
+	friend IDs
+
+2014-10-07  sin <sin@2f30.org>
+
+	* ratox.c: Reset fd offset when writing out
+
+2014-10-06  sin <sin@2f30.org>
+
+	* ratox.c: Nuke leading space
+
+2014-10-06  sin <sin@2f30.org>
+
+	* ratox.c: Reset state after hangup
+
+2014-10-06  sin <sin@2f30.org>
+
+	* ratox.c: Re-order function decls
+
+2014-10-06  sin <sin@2f30.org>
+
+	* ratox.c: Allow to attach aplay after we've initiated a call
+
 2014-10-05  sin <sin@2f30.org>
 
 	* ratox.c: Factor out check for NULL frame
