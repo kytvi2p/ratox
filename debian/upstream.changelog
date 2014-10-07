@@ -1,5 +1,19 @@
 2014-10-07  sin <sin@2f30.org>
 
+	* ratox.c: Rename ustatus to ustate
+
+2014-10-07  sin <sin@2f30.org>
+
+	* ratox.c: Correctly inform external scripts of an invalid user
+	state
+
+2014-10-07  sin <sin@2f30.org>
+
+	* ratox.c: Add support for changing the user state and reporting
+	friend's user state
+
+2014-10-07  sin <sin@2f30.org>
+
 	* ratox.c: Allocate enough memory to allow copying all the friends
 
 2014-10-07  sin <sin@2f30.org>

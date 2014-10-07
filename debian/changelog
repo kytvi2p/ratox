@@ -1,3 +1,15 @@
+ratox (0.1+20141007.3~git7cda83c-1) unstable; urgency=medium
+
+  [ sin ]
+  * Add support for changing the user state and reporting friend's user state
+  * Correctly inform external scripts of an invalid user state
+  * Rename ustatus to ustate
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Tue, 07 Oct 2014 11:48:32 +0000
+
 ratox (0.1+20141007.2~gitc81b37e-1) unstable; urgency=medium
 
   [ sin ]
