@@ -1,5 +1,13 @@
 2014-10-07  sin <sin@2f30.org>
 
+	* ratox.c: Simplify user state tracking
+
+2014-10-07  FRIGN <dev@frign.de>
+
+	* ratox.c: Refactor user-state-logic
+
+2014-10-07  sin <sin@2f30.org>
+
 	* ratox.c: Rename ustatus to ustate
 
 2014-10-07  sin <sin@2f30.org>
