@@ -135,6 +135,13 @@ static struct file ffiles[] = {
 	[FCALL_PENDING] = { .type = STATIC, .name = "call_pending", .flags = O_WRONLY | O_TRUNC  | O_CREAT },
 };
 
+static char *ustate[] = {
+	[TOX_USERSTATUS_NONE]    = "none",
+	[TOX_USERSTATUS_AWAY]    = "away",
+	[TOX_USERSTATUS_BUSY]    = "busy",
+	[TOX_USERSTATUS_INVALID] = "invalid"
+};
+
 enum {
 	TRANSFER_NONE,
 	TRANSFER_INITIATED,
@@ -752,13 +759,12 @@ cbstatusmessage(Tox *m, int32_t frnum, const uint8_t *data, uint16_t len, void *
 }
 
 static void
-cbuserstate(Tox *m, int32_t frnum, uint8_t status, void *udata)
+cbuserstate(Tox *m, int32_t frnum, uint8_t state, void *udata)
 {
 	struct friend *f;
-	char *ustate[] = { "none", "away", "busy", "invalid" };
 
-	if (status >= LEN(ustate)) {
-		weprintf("Received invalid user status: %d\n", status);
+	if (state >= LEN(ustate)) {
+		weprintf("Received invalid user status: %d\n", state);
 		return;
 	}
 
@@ -766,8 +772,8 @@ cbuserstate(Tox *m, int32_t frnum, uint8_t status, void *udata)
 		if (f->num == frnum) {
 			ftruncate(f->fd[FSTATE], 0);
 			lseek(f->fd[FSTATE], 0, SEEK_SET);
-			dprintf(f->fd[FSTATE], "%s\n", ustate[status]);
-			printout(": %s : State > %s\n", f->name, ustate[status]);
+			dprintf(f->fd[FSTATE], "%s\n", ustate[state]);
+			printout(": %s : State > %s\n", f->name, ustate[state]);
 			break;
 		}
 	}
@@ -1106,7 +1112,6 @@ localinit(void)
 	uint8_t name[TOX_MAX_NAME_LENGTH + 1];
 	uint8_t address[TOX_FRIEND_ADDRESS_SIZE];
 	uint8_t status[TOX_MAX_STATUSMESSAGE_LENGTH + 1];
-	char *ustate[] = { "none", "away", "busy" };
 	DIR *d;
 	int r;
 	size_t i, m;
@@ -1294,7 +1299,6 @@ friendcreate(int32_t frnum)
 {
 	struct friend *f;
 	uint8_t status[TOX_MAX_STATUSMESSAGE_LENGTH + 1];
-	char *ustate[] = { "none", "away", "busy", "invalid" };
 	size_t i;
 	DIR *d;
 	int r;
@@ -1473,14 +1477,6 @@ setuserstate(void *data)
 	char buf[PIPE_BUF];
 	ssize_t n;
 	size_t i;
-	struct {
-		char *name;
-		int n;
-	} ustate[] = {
-		{ .name = "none", .n = TOX_USERSTATUS_NONE },
-		{ .name = "away", .n = TOX_USERSTATUS_AWAY },
-		{ .name = "busy", .n = TOX_USERSTATUS_BUSY },
-	};
 
 	n = fiforead(gslots[STATE].dirfd, &gslots[STATE].fd[IN], gfiles[IN],
 		     buf, sizeof(buf) - 1);
@@ -1490,8 +1486,8 @@ setuserstate(void *data)
 		n--;
 	buf[n] = '\0';
 	for (i = 0; i < LEN(ustate); i++) {
-		if (strcmp(buf, ustate[i].name) == 0) {
-			tox_set_user_status(tox, ustate[i].n);
+		if (i != TOX_USERSTATUS_INVALID && strcmp(buf, ustate[i]) == 0) {
+			tox_set_user_status(tox, i);
 			break;
 		}
 	}
@@ -1499,14 +1495,14 @@ setuserstate(void *data)
 		ftruncate(gslots[STATE].fd[ERR], 0);
 		lseek(gslots[STATE].fd[ERR], 0, SEEK_SET);
 		dprintf(gslots[STATE].fd[ERR], "invalid\n");
-		weprintf("Invalid user status: %s\n", buf);
+		weprintf("Invalid state: %s\n", buf);
 		return;
 	}
 	ftruncate(gslots[STATE].fd[OUT], 0);
 	lseek(gslots[STATE].fd[OUT], 0, SEEK_SET);
 	dprintf(gslots[STATE].fd[OUT], "%s\n", buf);
 	datasave();
-	printout("User state > %s\n", buf);
+	printout(": State > %s\n", buf);
 }
 
 static void
