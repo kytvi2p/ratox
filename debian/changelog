@@ -1,3 +1,9 @@
+ratox (0.1+20141008.4~git6ec82b9-1ubuntu1) trusty; urgency=medium
+
+  * Upload to PPA
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Wed, 08 Oct 2014 23:59:10 +0000
+
 ratox (0.1+20141008.4~git6ec82b9-1) unstable; urgency=medium
 
   [ FRIGN ]
