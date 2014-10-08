@@ -418,6 +418,7 @@ cbcallended(void *av, int32_t cnum, void *udata)
 
 	cancelrxcall(f, "Ended");
 	canceltxcall(f, "Ended");
+	toxav_kill_transmission(toxav, cnum);
 }
 
 static void
@@ -433,6 +434,7 @@ cbcallcancelled(void *av, int32_t cnum, void *udata)
 
 	cancelrxcall(f, "Cancelled");
 	canceltxcall(f, "Cancelled");
+	toxav_kill_transmission(toxav, cnum);
 }
 
 static void
@@ -447,6 +449,8 @@ cbcallrejected(void *av, int32_t cnum, void *udata)
 		return;
 
 	canceltxcall(f, "Rejected");
+	cancelrxcall(f, "Rejected");
+	toxav_kill_transmission(toxav, cnum);
 }
 
 static void
@@ -497,6 +501,7 @@ cbcallending(void *av, int32_t cnum, void *udata)
 
 	cancelrxcall(f, "Ending");
 	canceltxcall(f, "Ending");
+	toxav_kill_transmission(toxav, cnum);
 }
 
 static void
@@ -509,15 +514,24 @@ cbreqtimeout(void *av, int32_t cnum, void *udata)
 			break;
 	if (!f)
 		return;
-	cancelrxcall(f, "Timeout");
-	canceltxcall(f, "Timeout");
-	printf("Entered %s\n", __func__);
+	cancelrxcall(f, "Request timeout");
+	canceltxcall(f, "Request timeout");
+	toxav_kill_transmission(toxav, cnum);
 }
 
 static void
 cbpeertimeout(void *av, int32_t cnum, void *udata)
 {
-	printf("Entered %s\n", __func__);
+	struct friend *f;
+
+	TAILQ_FOREACH(f, &friendhead, entry)
+		if (f->av.num == cnum)
+			break;
+	if (!f)
+		return;
+	cancelrxcall(f, "Peer timeout");
+	canceltxcall(f, "Peer timeout");
+	toxav_kill_transmission(toxav, cnum);
 }
 
 static void
@@ -1817,7 +1831,7 @@ loop(void)
 				case av_CallNonExistant:
 					toxav_call(toxav, &f->av.num, f->num, &toxavconfig, RINGINGDELAY);
 					f->av.state = av_CallInviting;
-					printout(": %s : Tx AV > Calling\n", f->name);
+					printout(": %s : Tx AV > Inviting\n", f->name);
 					break;
 				case av_CallActive:
 					sendfriendcalldata(f);
