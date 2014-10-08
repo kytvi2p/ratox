@@ -1,5 +1,27 @@
 2014-10-08  sin <sin@2f30.org>
 
+	* ratox.c: Style fix Similar style as for detecting broken file transfers.
+
+2014-10-08  sin <sin@2f30.org>
+
+	* ratox.c: Don't close a random fd if (f->rxstate == TRANSFER_INPROGRESS &&     (fd = openat(f->dirfd, ffiles[FFILE_OUT].name,
+	    ffiles[FFILE_OUT].flags, 0666)) == -1 && errno == ENXIO) {     ...  } else {     close(fd); <--- not always appropriate! }
+
+2014-10-08  sin <sin@2f30.org>
+
+	* ratox.c: Do a toxav_hangup() like we do elsewhere This will trigger the callback and reset toxav internal states
+	accordingly.  In the callback we actually call cancelcall().
+
+2014-10-08  sin <sin@2f30.org>
+
+	* ratox.c: Fix file-transfers
+
+2014-10-08  FRIGN <dev@frign.de>
+
+	* ratox.c: Check outfiles if they are still open If not, abort receiving.
+
+2014-10-08  sin <sin@2f30.org>
+
 	* README: Update README
 
 2014-10-08  sin <sin@2f30.org>
