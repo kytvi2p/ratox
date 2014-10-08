@@ -1,14 +1,14 @@
+ratox (0.1+20141008.2~gitddd4618-2~deb7u+1) stable; urgency=medium
+
+  * Backport to Wheezy
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Wed, 08 Oct 2014 15:33:09 +0000
+
 ratox (0.1+20141008.2~gitddd4618-2) unstable; urgency=medium
 
   * Re-add raspberrypi patch, -lrt didn't last long upstream :)
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Wed, 08 Oct 2014 15:30:55 +0000
-
-ratox (0.1+20141008.2~gitddd4618-1~deb7u+1) stable; urgency=medium
-
-  * Backport to Wheezy
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Wed, 08 Oct 2014 15:12:12 +0000
 
 ratox (0.1+20141008.2~gitddd4618-1) unstable; urgency=medium
 
