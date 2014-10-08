@@ -2,8 +2,11 @@ Source: ratox
 Section: net
 Priority: optional
 Maintainer: Kill Your TV <killyourtv@i2pmail.org>
-Build-Depends: debhelper (>= 9), libtoxencryptsave-dev, libtoxcore-dev, libtoxav-dev
-Standards-Version: 3.9.5
+Build-Depends: debhelper (>= 9)
+ ,libtoxencryptsave-dev
+ ,libtoxcore-dev
+ ,libtoxav-dev
+Standards-Version: 3.9.6
 Homepage: http://ratox.2f30.org/
 Vcs-Git: git://killyourtv.i2p/git/ratox.git
 Vcs-Browser: http://killyourtv.i2p/gitweb/?p=ratox.git
