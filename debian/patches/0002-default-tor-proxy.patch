@@ -9,7 +9,7 @@ by -p defaulting to Tor.
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/config.def.h b/config.def.h
-index 6ec04be..5a13397 100644
+index 7fd013f..546cb07 100644
 --- a/config.def.h
 +++ b/config.def.h
 @@ -8,8 +8,8 @@
