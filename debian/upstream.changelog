@@ -1,3 +1,28 @@
+2014-10-08  sin <sin@2f30.org>
+
+	* ratox.c: A bit more consistent output message
+
+2014-10-08  sin <sin@2f30.org>
+
+	* ratox.c: Implement peer timeout
+
+2014-10-08  sin <sin@2f30.org>
+
+	* config.def.h: Increase ringing delay
+
+2014-10-08  sin <sin@2f30.org>
+
+	* TODO: Update TODO
+
+2014-10-08  sin <sin@2f30.org>
+
+	* ratox.c: Release call resources with toxav_kill_transmission() Reject calls on both sides to reset states.  This still needs to be
+	tested to see if there's any effect of doing that.
+
+2014-10-08  sin <sin@2f30.org>
+
+	* ratox.c: Remove debug printf()
+
 2014-10-07  sin <sin@2f30.org>
 
 	* ratox.c: Simplify user state tracking
