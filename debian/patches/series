@@ -1,3 +1,4 @@
 0001-fix-makefile.patch
 0002-default-tor-proxy.patch
 0003-raspberrypi-fix.patch
+0004-kfreebsd-fix.patch
