@@ -1,0 +1,24 @@
+From: Kill Your TV <killyourtv@i2pmail.org>
+Date: Wed, 8 Oct 2014 14:43:28 +0000
+Subject: custom manpage
+
+---
+ ratox.1 | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/ratox.1 b/ratox.1
+index a3fa386..07f9ed0 100644
+--- a/ratox.1
++++ b/ratox.1
+@@ -24,8 +24,9 @@ Enable TCP mode. By default, Tox operates with UDP and is recommended, as TCP mo
+ .TP
+ \fB\-p\fR
+ Enable TCP SOCKS5 proxy as specified in config.def.h when the package was built.
+-By default when this option is enabled, ratox will use a proxy on \fI127.0.0.1\fR and port
+-\fI8080\fR.
++When this option is enabled, ratox will use a proxy on \fI127.0.0.1\fR and port
++\fI9050\fR (note that this is a divergence from upstream). \fBChanging the host
++and port requires rebuilding the package!\fR
+ 
+ .SH File structure
+ In the following, \fI/\fR refers to the directory ratox has been started in.
