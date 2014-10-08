@@ -149,6 +149,7 @@ static char *ustate[] = {
 enum {
 	TRANSFER_NONE,
 	TRANSFER_INITIATED,
+	TRANSFER_PENDING,
 	TRANSFER_INPROGRESS,
 	TRANSFER_PAUSED,
 };
@@ -881,7 +882,7 @@ cbfilesendreq(Tox *m, int32_t frnum, uint8_t fnum, uint64_t fsz,
 	ftruncate(f->fd[FFILE_PENDING], 0);
 	lseek(f->fd[FFILE_PENDING], 0, SEEK_SET);
 	dprintf(f->fd[FFILE_PENDING], "%s\n", filename);
-	f->rxstate = TRANSFER_INPROGRESS;
+	f->rxstate = TRANSFER_PENDING;
 	printout(": %s : Rx > Pending %s\n", f->name, filename);
 }
 
@@ -919,32 +920,32 @@ cbfiledata(Tox *m, int32_t frnum, uint8_t fnum, const uint8_t *data, uint16_t le
 static void
 canceltxtransfer(struct friend *f)
 {
-	if (f->tx.state != TRANSFER_NONE) {
-		printout(": %s : Tx > Cancelling\n", f->name);
-		if (tox_file_send_control(tox, f->num, 0, 0, TOX_FILECONTROL_KILL, NULL, 0) < 0)
-			weprintf("Failed to kill Tx transfer\n");
-		f->tx.state = TRANSFER_NONE;
-		free(f->tx.buf);
-		f->tx.buf = NULL;
-		fiforeset(f->dirfd, &f->fd[FFILE_IN], ffiles[FFILE_IN]);
-	}
+	if (f->tx.state == TRANSFER_NONE)
+		return;
+	printout(": %s : Tx > Cancelling\n", f->name);
+	if (tox_file_send_control(tox, f->num, 0, 0, TOX_FILECONTROL_KILL, NULL, 0) < 0)
+		weprintf("Failed to kill Tx transfer\n");
+	f->tx.state = TRANSFER_NONE;
+	free(f->tx.buf);
+	f->tx.buf = NULL;
+	fiforeset(f->dirfd, &f->fd[FFILE_IN], ffiles[FFILE_IN]);
 }
 
 static void
 cancelrxtransfer(struct friend *f)
 {
-	if (f->rxstate == TRANSFER_INPROGRESS) {
-		printout(": %s : Rx > Cancelling\n", f->name);
-		if (tox_file_send_control(tox, f->num, 1, 0, TOX_FILECONTROL_KILL, NULL, 0) < 0)
-			weprintf("Failed to kill Rx transfer\n");
-		if (f->fd[FFILE_OUT] != -1) {
-			close(f->fd[FFILE_OUT]);
-			f->fd[FFILE_OUT] = -1;
-		}
-		ftruncate(f->fd[FFILE_PENDING], 0);
-		lseek(f->fd[FFILE_PENDING], 0, SEEK_SET);
-		f->rxstate = TRANSFER_NONE;
+	if (f->rxstate == TRANSFER_NONE)
+		return;
+	printout(": %s : Rx > Cancelling\n", f->name);
+	if (tox_file_send_control(tox, f->num, 1, 0, TOX_FILECONTROL_KILL, NULL, 0) < 0)
+		weprintf("Failed to kill Rx transfer\n");
+	if (f->fd[FFILE_OUT] != -1) {
+		close(f->fd[FFILE_OUT]);
+		f->fd[FFILE_OUT] = -1;
 	}
+	ftruncate(f->fd[FFILE_PENDING], 0);
+	lseek(f->fd[FFILE_PENDING], 0, SEEK_SET);
+	f->rxstate = TRANSFER_NONE;
 }
 
 static void
@@ -1597,7 +1598,7 @@ loop(void)
 	time_t t0, t1, now;
 	int connected = 0;
 	int i, n, r;
-	int fdmax;
+	int fd, fdmax;
 	char c;
 	fd_set rfds;
 	struct timeval tv;
@@ -1679,12 +1680,21 @@ loop(void)
 		}
 
 		/* Check for broken transfers, i.e. the friend went offline
-		 * in the middle of a transfer.
+		 * in the middle of a transfer or you close file_out.
 		 */
 		TAILQ_FOREACH(f, &friendhead, entry) {
 			if (tox_get_friend_connection_status(tox, f->num) == 0) {
 				canceltxtransfer(f);
 				cancelrxtransfer(f);
+			}
+			if (f->rxstate != TRANSFER_INPROGRESS)
+				continue;
+			fd = openat(f->dirfd, ffiles[FFILE_OUT].name, ffiles[FFILE_OUT].flags, 0666);
+			if (fd < 0) {
+				if (errno == ENXIO)
+					cancelrxtransfer(f);
+			} else {
+				close(fd);
 			}
 		}
 
@@ -1727,6 +1737,7 @@ loop(void)
 						cancelrxtransfer(f);
 					} else {
 						printout(": %s : Rx > Accepted\n", f->name);
+						f->rxstate = TRANSFER_INPROGRESS;
 					}
 				}
 			}
@@ -1747,9 +1758,24 @@ loop(void)
 					f->fd[FCALL_OUT] = r;
 				}
 			}
-			if (f->av.num != -1)
-				if (toxav_get_call_state(toxav, f->av.num) == av_CallStarting)
+			if (f->av.num != -1) {
+				switch (toxav_get_call_state(toxav, f->av.num)) {
+				case av_CallStarting:
 					toxav_answer(toxav, f->av.num, &toxavconfig);
+					break;
+				case av_CallActive:
+					fd = openat(f->dirfd, ffiles[FCALL_OUT].name, ffiles[FCALL_OUT].flags);
+					if (fd < 0) {
+						if (errno == ENXIO)
+							toxav_hangup(toxav, f->av.num);
+					} else {
+						close(fd);
+					}
+					break;
+				default:
+					break;
+				}
+			}
 		}
 
 		if (n == 0)
