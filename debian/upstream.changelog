@@ -1,3 +1,12 @@
+2014-10-08  FRIGN <dev@frign.de>
+
+	* ratox.c: Fix request- and friend-management When you got a request, but not accepted it via request/out/... and
+	instead sent a request yourself, it would not remove the FIFO.  This
+	patch fixes this behaviour by iterating through the request- list
+	and removing the FIFO if it's still existing.  Additionally,
+	actually make it possible to reject requests and re-add your friends
+	later by managing the internal tox-state properly.
+
 2014-10-08  sin <sin@2f30.org>
 
 	* ratox.c: Style fix Similar style as for detecting broken file transfers.
