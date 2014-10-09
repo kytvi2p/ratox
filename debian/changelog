@@ -1,3 +1,15 @@
+ratox (0.1+20141009.r288-1) unstable; urgency=medium
+
+  [ sin ]
+  * Use NSIG instead of _NSIG
+  * Add nospam/ to manpage
+  * Add kytv to LICENSE for contributing the manpage
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Thu, 09 Oct 2014 19:12:35 +0000
+
 ratox (0.1+20141008.4~git6ec82b9-1ubuntu1) trusty; urgency=medium
 
   * Upload to PPA
