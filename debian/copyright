@@ -7,7 +7,7 @@ Copyright: 2014 sin <sin@2f30.org>
            2014 Laslo Hunhold <dev@frign.de>
 License: ISC
 
-Files: debian/*
+Files: ratox.1 debian/*
 Copyright: 2014 Kill Your TV <killyourtv@i2pmail.org>
 License: ISC
 
