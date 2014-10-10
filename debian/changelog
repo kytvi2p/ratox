@@ -1,3 +1,14 @@
+ratox (0.1+20141010.r290-1) unstable; urgency=medium
+
+  [ sin ]
+  * Don't spin on request/out/<ID> if we echo anything other than '0' or '1'
+  * Add link to patch in README for building on OSX
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 10 Oct 2014 23:41:49 +0000
+
 ratox (0.1+20141009.r288-1ubuntu1) trusty; urgency=medium
 
   * Upload to PPA
