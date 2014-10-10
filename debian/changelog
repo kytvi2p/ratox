@@ -1,3 +1,9 @@
+ratox (0.1+20141010.r290-1ubuntu1) trusty; urgency=medium
+
+  * Upload to PPA
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 10 Oct 2014 23:44:00 +0000
+
 ratox (0.1+20141010.r290-1) unstable; urgency=medium
 
   [ sin ]
@@ -8,12 +14,6 @@ ratox (0.1+20141010.r290-1) unstable; urgency=medium
   * New upstream git snapshot
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 10 Oct 2014 23:41:49 +0000
-
-ratox (0.1+20141009.r288-1ubuntu1) trusty; urgency=medium
-
-  * Upload to PPA
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Thu, 09 Oct 2014 19:19:03 +0000
 
 ratox (0.1+20141009.r288-1) unstable; urgency=medium
 
