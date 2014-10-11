@@ -1,14 +1,14 @@
+ratox (0.1+20141010.r290-2~precise+1) precise; urgency=medium
+
+  * Upload to PPA
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sat, 11 Oct 2014 14:58:41 +0000
+
 ratox (0.1+20141010.r290-2) unstable; urgency=medium
 
   * Fix build against new libtoxcore
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Sat, 11 Oct 2014 14:48:26 +0000
-
-ratox (0.1+20141010.r290-1~precise+1) precise; urgency=medium
-
-  * Upload to PPA
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 10 Oct 2014 23:46:03 +0000
 
 ratox (0.1+20141010.r290-1) unstable; urgency=medium
 
