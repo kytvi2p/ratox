@@ -1,3 +1,9 @@
+ratox (0.1+20141010.r290-2) unstable; urgency=medium
+
+  * Fix build against new libtoxcore
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sat, 11 Oct 2014 14:48:26 +0000
+
 ratox (0.1+20141010.r290-1) unstable; urgency=medium
 
   [ sin ]
