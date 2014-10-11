@@ -7,7 +7,7 @@ Subject: custom manpage
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/ratox.1 b/ratox.1
-index a3fa386..07f9ed0 100644
+index 2ad7415..c961a41 100644
 --- a/ratox.1
 +++ b/ratox.1
 @@ -24,8 +24,9 @@ Enable TCP mode. By default, Tox operates with UDP and is recommended, as TCP mo
