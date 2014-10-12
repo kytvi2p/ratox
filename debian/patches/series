@@ -2,4 +2,3 @@
 0002-default-tor-proxy.patch
 0003-custom-manpage.patch
 0004-fix-compilation-on-raspberrypi.patch
-0005-fix-build-with-new-toxcore.patch
