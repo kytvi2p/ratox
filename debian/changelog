@@ -1,3 +1,19 @@
+ratox (0.1+20141012.r294-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Add stricter error-checking
+
+  [ sin ]
+  * tox_is_data_encrypted() was renamed to tox_is_save_encrypted()
+  * We might eventually have logerr() and logwarn()
+  * Fix vertical spacing
+
+  [ Kill Your TV ]
+  * Drop debian/patches/0005-fix-build-with-new-toxcore.patch, applied upstream
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sun, 12 Oct 2014 17:15:18 +0000
+
 ratox (0.1+20141010.r290-2) unstable; urgency=medium
 
   * Fix build against new libtoxcore
