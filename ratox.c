@@ -213,17 +213,10 @@ static void printrat(void);
 static void logmsg(const char *, ...);
 static void fiforeset(int, int *, struct file);
 static ssize_t fiforead(int, int *, struct file, void *, size_t);
-static void cbcallinvite(void *, int32_t, void *);
-static void cbcallstarted(void *, int32_t, void *);
-static void cbcallcancelled(void *, int32_t, void *);
-static void cbcallrejected(void *, int32_t, void *);
-static void cbcallended(void *, int32_t, void *);
-static void cbcallringing(void *, int32_t, void *);
 static void preparetxcall(struct friend *);
-static void cbcallstarting(void *, int32_t, void *);
-static void cbcallending(void *, int32_t, void *);
-static void cbreqtimeout(void *, int32_t, void *);
-static void cbpeertimeout(void *, int32_t, void *);
+static void cbcallinvite(void *, int32_t, void *);
+static void cbcallstart(void *, int32_t, void *);
+static void cbcallterminate(void *, int32_t, void *);
 static void cbcalltypechange(void *, int32_t, void *);
 static void cbcalldata(ToxAv *, int32_t, int16_t *, int, void *);
 static void cancelcall(struct friend *, char *);
@@ -352,6 +345,18 @@ again:
 }
 
 static void
+preparetxcall(struct friend *f)
+{
+	f->av.frame = malloc(sizeof(int16_t) * framesize);
+	if (!f->av.frame)
+		eprintf("malloc:");
+	f->av.n = 0;
+	f->av.incompleteframe = 0;
+	f->av.lastsent.tv_sec = 0;
+	f->av.lastsent.tv_nsec = 0;
+}
+
+static void
 cbcallinvite(void *av, int32_t cnum, void *udata)
 {
 	ToxAvCSettings avconfig;
@@ -395,7 +400,7 @@ cbcallinvite(void *av, int32_t cnum, void *udata)
 }
 
 static void
-cbcallstarted(void *av, int32_t cnum, void *udata)
+cbcallstart(void *av, int32_t cnum, void *type)
 {
 	struct friend *f;
 	int r;
@@ -406,74 +411,19 @@ cbcallstarted(void *av, int32_t cnum, void *udata)
 	if (!f)
 		return;
 
+	if(!strncmp(type, "Tx", 2))
+		preparetxcall(f);
 	r = toxav_prepare_transmission(toxav, cnum, av_jbufdc, av_VADd, 0);
 	if (r < 0) {
-		weprintf("Failed to prepare Rx AV transmission\n");
+		weprintf("Failed to prepare %s AV transmission\n", type);
 		cancelcall(f, "Failed");
 		return;
 	}
-	logmsg(": %s : Rx AV > Started\n", f->name);
+	logmsg(": %s : %s AV > Started\n", f->name, type);
 }
 
 static void
-cbcallended(void *av, int32_t cnum, void *udata)
-{
-	struct friend *f;
-
-	TAILQ_FOREACH(f, &friendhead, entry)
-		if (f->av.num == cnum)
-			break;
-	if (!f)
-		return;
-	cancelcall(f, "Ended");
-}
-
-static void
-cbcallcancelled(void *av, int32_t cnum, void *udata)
-{
-	struct friend *f;
-
-	TAILQ_FOREACH(f, &friendhead, entry)
-		if (f->av.num == cnum)
-			break;
-	if (!f)
-		return;
-	cancelcall(f, "Cancelled");
-}
-
-static void
-cbcallrejected(void *av, int32_t cnum, void *udata)
-{
-	struct friend *f;
-
-	TAILQ_FOREACH(f, &friendhead, entry)
-		if (f->av.num == cnum)
-			break;
-	if (!f)
-		return;
-	cancelcall(f, "Rejected");
-}
-
-static void
-cbcallringing(void *av, int32_t cnum, void *udata)
-{
-	return;
-}
-
-static void
-preparetxcall(struct friend *f)
-{
-	f->av.frame = malloc(sizeof(int16_t) * framesize);
-	if (!f->av.frame)
-		eprintf("malloc:");
-	f->av.n = 0;
-	f->av.incompleteframe = 0;
-	f->av.lastsent.tv_sec = 0;
-	f->av.lastsent.tv_nsec = 0;
-}
-
-static void
-cbcallstarting(void *av, int32_t cnum, void *udata)
+cbcallterminate(void *av, int32_t cnum, void *udata)
 {
 	struct friend *f;
 	int r;
@@ -484,59 +434,12 @@ cbcallstarting(void *av, int32_t cnum, void *udata)
 	if (!f)
 		return;
 
-	preparetxcall(f);
-	r = toxav_prepare_transmission(toxav, cnum, av_jbufdc, av_VADd, 0);
-	if (r < 0) {
-		weprintf("Failed to prepare Tx AV transmission\n");
-		cancelcall(f, "Failed");
-		return;
+	if (!strcmp(udata, "Peer timeout")) {
+		r = toxav_stop_call(toxav, cnum);
+		if (r < 0)
+			weprintf("Failed to stop call\n");
 	}
-	logmsg(": %s : Tx AV > Started\n", f->name);
-}
-
-static void
-cbcallending(void *av, int32_t cnum, void *udata)
-{
-	struct friend *f;
-
-	TAILQ_FOREACH(f, &friendhead, entry)
-		if (f->av.num == cnum)
-			break;
-	if (!f)
-		return;
-	cancelcall(f, "Ending");
-}
-
-static void
-cbreqtimeout(void *av, int32_t cnum, void *udata)
-{
-	struct friend *f;
-
-	TAILQ_FOREACH(f, &friendhead, entry)
-		if (f->av.num == cnum)
-			break;
-	if (!f)
-		return;
-	cancelcall(f, "Request timeout");
-}
-
-static void
-cbpeertimeout(void *av, int32_t cnum, void *udata)
-{
-	struct friend *f;
-	int r;
-
-	TAILQ_FOREACH(f, &friendhead, entry)
-		if (f->av.num == cnum)
-			break;
-	if (!f)
-		return;
-
-	r = toxav_stop_call(toxav, cnum);
-	if (r < 0) {
-		weprintf("Failed to stop call\n");
-	}
-	cancelcall(f, "Peer timeout");
+	cancelcall(f, udata);
 }
 
 static void
@@ -1280,17 +1183,16 @@ toxinit(void)
 	tox_callback_file_data(tox, cbfiledata, NULL);
 
 	toxav_register_callstate_callback(toxav, cbcallinvite, av_OnInvite, NULL);
-	toxav_register_callstate_callback(toxav, cbcallstarted, av_OnStart, NULL);
-	toxav_register_callstate_callback(toxav, cbcallended, av_OnEnd, NULL);
-	toxav_register_callstate_callback(toxav, cbcallcancelled, av_OnCancel, NULL);
-	toxav_register_callstate_callback(toxav, cbcallrejected, av_OnReject, NULL);
+	toxav_register_callstate_callback(toxav, cbcallstart, av_OnStart, "Rx");
+	toxav_register_callstate_callback(toxav, cbcallterminate, av_OnEnd, "Ended");
+	toxav_register_callstate_callback(toxav, cbcallterminate, av_OnCancel, "Cancelled");
+	toxav_register_callstate_callback(toxav, cbcallterminate, av_OnReject, "Rejected");
 
-	toxav_register_callstate_callback(toxav, cbcallringing, av_OnRinging, NULL);
-	toxav_register_callstate_callback(toxav, cbcallstarting, av_OnStarting, NULL);
-	toxav_register_callstate_callback(toxav, cbcallending, av_OnEnding, NULL);
+	toxav_register_callstate_callback(toxav, cbcallstart, av_OnStarting, "Tx");
+	toxav_register_callstate_callback(toxav, cbcallterminate, av_OnEnding, "Ending");
 
-	toxav_register_callstate_callback(toxav, cbreqtimeout, av_OnRequestTimeout, NULL);
-	toxav_register_callstate_callback(toxav, cbpeertimeout, av_OnPeerTimeout, NULL);
+	toxav_register_callstate_callback(toxav, cbcallterminate, av_OnRequestTimeout, "Request timeout");
+	toxav_register_callstate_callback(toxav, cbcallterminate, av_OnPeerTimeout, "Peer timeout");
 	toxav_register_callstate_callback(toxav, cbcalltypechange, av_OnMediaChange, NULL);
 
 	toxav_register_audio_recv_callback(toxav, cbcalldata, NULL);
