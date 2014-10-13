@@ -1,3 +1,9 @@
+ratox (0.1+20141013.r299-1~deb7u+1) stable; urgency=medium
+
+  * Backport to Wheezy
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 13 Oct 2014 22:44:55 +0000
+
 ratox (0.1+20141013.r299-1) unstable; urgency=medium
 
   [ FRIGN ]
@@ -8,12 +14,6 @@ ratox (0.1+20141013.r299-1) unstable; urgency=medium
   * New upstream git snapshot
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 13 Oct 2014 21:50:11 +0000
-
-ratox (0.1+20141012.r297-1~deb7u+1) stable; urgency=medium
-
-  * Backport to Wheezy
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 13 Oct 2014 11:48:49 +0000
 
 ratox (0.1+20141012.r297-1) unstable; urgency=medium
 
