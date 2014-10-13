@@ -1,3 +1,9 @@
+ratox (0.1+20141013.r299-1ubuntu1) trusty; urgency=medium
+
+  * Building for Trusty
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 13 Oct 2014 22:47:02 +0000
+
 ratox (0.1+20141013.r299-1) unstable; urgency=medium
 
   [ FRIGN ]
@@ -20,12 +26,6 @@ ratox (0.1+20141012.r297-1) unstable; urgency=medium
   * New upstream git snapshot
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 13 Oct 2014 10:57:57 +0000
-
-ratox (0.1+20141012.r294-1ubuntu1) trusty; urgency=medium
-
-  * Build for Trusty
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Sun, 12 Oct 2014 17:29:38 +0000
 
 ratox (0.1+20141012.r294-1) unstable; urgency=medium
 
