@@ -1,3 +1,56 @@
+2014-10-12  FRIGN <dev@frign.de>
+
+	* ratox.c: Finish cleaning up av-callbacks Now it's fun again to work with the code.
+
+2014-10-12  FRIGN <dev@frign.de>
+
+	* ratox.c: Further simplify call-start-callbacks using the udata-void pointers to pass data as a source of
+	information.
+
+2014-10-12  FRIGN <dev@frign.de>
+
+	* ratox.c: Use (void *userdata) in callbacks and drop
+	ringing-callback This saves a lot of LOC and is definitely easier to maintain.
+
+2014-10-12  sin <sin@2f30.org>
+
+	* ratox.c: Fix vertical spacing
+
+2014-10-12  sin <sin@2f30.org>
+
+	* ratox.c: We might eventually have logerr() and logwarn()
+
+2014-10-12  sin <sin@2f30.org>
+
+	* ratox.c: tox_is_data_encrypted() was renamed to
+	tox_is_save_encrypted()
+
+2014-10-12  FRIGN <dev@frign.de>
+
+	* ratox.c: Add stricter error-checking In upcoming commits, these errors will be incorporated into the
+	logging-system, so they don't look so out of place when issued.
+
+2014-10-10  sin <sin@2f30.org>
+
+	* README: Add link to patch in README for building on OSX
+
+2014-10-10  sin <sin@2f30.org>
+
+	* ratox.c: Don't spin on request/out/<ID> if we echo anything other
+	than '0' or '1'
+
+2014-10-09  sin <sin@2f30.org>
+
+	* LICENSE: Add kytv to LICENSE for contributing the manpage
+
+2014-10-09  sin <sin@2f30.org>
+
+	* ratox.1: Add nospam/ to manpage
+
+2014-10-09  sin <sin@2f30.org>
+
+	* readpassphrase.c: Use NSIG instead of _NSIG
+
 2014-10-08  FRIGN <dev@frign.de>
 
 	* ratox.c: Fix request- and friend-management When you got a request, but not accepted it via request/out/... and

@@ -1,3 +1,15 @@
+ratox (0.1+20141012.r297-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Use (void *userdata) in callbacks and drop ringing-callback
+  * Further simplify call-start-callbacks
+  * Finish cleaning up av-callbacks
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 13 Oct 2014 10:57:57 +0000
+
 ratox (0.1+20141012.r294-1) unstable; urgency=medium
 
   [ FRIGN ]
