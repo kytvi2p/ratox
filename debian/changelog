@@ -1,3 +1,14 @@
+ratox (0.1+20141013.r299-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Fortify error-checks and FSM
+  * Only send call-data when Tx transmission is ready
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 13 Oct 2014 21:50:11 +0000
+
 ratox (0.1+20141012.r297-1~deb7u+1) stable; urgency=medium
 
   * Backport to Wheezy
