@@ -1,3 +1,9 @@
+ratox (0.1+20141013.r300-1~deb7u+1) stable; urgency=medium
+
+  * Backport to Wheezy
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Tue, 14 Oct 2014 23:33:53 +0000
+
 ratox (0.1+20141013.r300-1) unstable; urgency=medium
 
   [ FRIGN ]
