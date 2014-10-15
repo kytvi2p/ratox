@@ -1,3 +1,19 @@
+ratox (0.1+20141013.r306-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Fortify and optimize file-sending
+
+  [ sin ]
+  * Update README
+  * Only call toxav_kill_transmission() after toxav_prepare_transmission()
+  * Only complain if errno is not EWOULDBLOCK
+  * Remember to cool down the transfer for pending buffers as well
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Wed, 15 Oct 2014 20:53:25 +0000
+
 ratox (0.1+20141013.r300-1) unstable; urgency=medium
 
   [ FRIGN ]

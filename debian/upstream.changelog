@@ -1,3 +1,60 @@
+2014-10-15  sin <sin@2f30.org>
+
+	* ratox.c: Remember to cool down the transfer for pending buffers as
+	well This change halves CPU usage on my system.
+
+2014-10-15  sin <sin@2f30.org>
+
+	* ratox.c: Only complain if errno is not EWOULDBLOCK
+
+2014-10-15  sin <sin@2f30.org>
+
+	* ratox.c: Only call toxav_kill_transmission() after
+	toxav_prepare_transmission() toxav_prepare_transmission() sets the internal toxav `call_active'
+	state variable.  This is checked in toxav_kill_transmission() and
+	only if set, proceeds to release the resources.
+
+2014-10-15  sin <sin@2f30.org>
+
+	* README: Update README
+
+2014-10-15  sin <sin@2f30.org>
+
+	* config.mk: Build with -g so users can provide meaningful
+	backtraces
+
+2014-10-14  FRIGN <dev@frign.de>
+
+	* ratox.c: Fortify and optimize file-sending Do this in two ways: 1) only allow ratox to stay in the file-sender for a certain amount
+	of time 2) Stop hammering tox_file_send_data(). When it returns -1, we put
+	the given friend into a cooldown-state, because all internal
+	transmission slots are full.  File sending thus now works in bursts, reading from file_in as long
+	as tox_do() allows or until tox_file_send_data() fails.  An easy way to see why we need to do the former is piping
+	/dev/urandom to file_in, which never blocks. Effectively, the user
+	goes "offline" after a while given he is trapped inside the loop.  Piping to /dev/urandom is not an unrealistic testcase. Imagine a
+	researcher who desperately needs true random data from his special
+	RNG in his lab using ratox and piping it through /dev/urandom.
+
+2014-10-13  FRIGN <dev@frign.de>
+
+	* ratox.c: Change the state-files rename file_pending to file_state rename call_pending to call_state 	0 = no call 	1 = call pending 	2 = call active
+
+2014-10-13  FRIGN <dev@frign.de>
+
+	* ratox.c: Only send call-data when Tx transmission is ready Due to a bug in toxcore the call is set to active too early, leaving
+	room for invocations of sendfriendcalldata() even though the
+	transmission has not yet been set up in cbcallstart.  Fix this with
+	a small workaround keeping the transmission-state in the client.  In
+	the long run, this definitely needs to be fixed in toxcore for
+	consistency.
+
+2014-10-13  FRIGN <dev@frign.de>
+
+	* ratox.c: Fortify error-checks and FSM Basically the direct calls to cancelcall() should be minimized and
+	only set off in a callback.  Additionally, tweak other error-cases
+	and don't always quit fatally but instead provide ways to get out of
+	an error-condition.
+
 2014-10-12  FRIGN <dev@frign.de>
 
 	* ratox.c: Finish cleaning up av-callbacks Now it's fun again to work with the code.

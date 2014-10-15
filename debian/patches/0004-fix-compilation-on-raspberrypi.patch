@@ -6,13 +6,11 @@ Subject: fix compilation on raspberrypi
  config.mk | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/config.mk b/config.mk
-index 8053af1..d85100a 100644
 --- a/config.mk
 +++ b/config.mk
-@@ -9,4 +9,4 @@ CC = cc
+@@ -9,4 +9,4 @@
  LD = $(CC)
  CPPFLAGS = -DVERSION=\"${VERSION}\"
- CFLAGS   = -I/usr/include -Wall -Wunused $(CPPFLAGS) $(shell dpkg-buildflags --get CFLAGS)
--LDFLAGS  = -L/usr/lib -ltoxcore -ltoxav -ltoxencryptsave $(shell dpkg-buildflags --get LDFLAGS)
-+LDFLAGS  = -L/usr/lib -ltoxcore -ltoxav -ltoxencryptsave -lrt $(shell dpkg-buildflags --get LDFLAGS)
+ CFLAGS   = -g -I/usr/include -Wall -Wunused $(CPPFLAGS) $(shell dpkg-buildflags --get CFLAGS)
+-LDFLAGS  = -g -L/usr/lib -ltoxcore -ltoxav -ltoxencryptsave $(shell dpkg-buildflags --get LDFLAGS)
++LDFLAGS  = -g -L/usr/lib -ltoxcore -ltoxav -ltoxencryptsave -lrt $(shell dpkg-buildflags --get LDFLAGS)
