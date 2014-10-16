@@ -161,6 +161,8 @@ struct transfer {
 	ssize_t n;
 	int pendingbuf;
 	int state;
+	struct timespec lastblock;
+	int cooldown;
 };
 
 struct call {
@@ -498,7 +500,7 @@ cancelcall(struct friend *f, char *action)
 	logmsg(": %s : Rx/Tx AV > %s\n", f->name, action);
 
 	if (f->av.num != -1) {
-		if (toxav_get_call_state(toxav, f->av.num) != av_CallInviting) {
+		if (f->av.transmission) {
 			r = toxav_kill_transmission(toxav, f->av.num);
 			if (r < 0)
 				weprintf("Failed to kill transmission\n");
@@ -777,6 +779,9 @@ cbfilecontrol(Tox *m, int32_t frnum, uint8_t rec_sen, uint8_t fnum, uint8_t ctrl
 			f->tx.state = TRANSFER_NONE;
 			free(f->tx.buf);
 			f->tx.buf = NULL;
+			f->tx.lastblock.tv_sec = 0;
+			f->tx.lastblock.tv_nsec = 0;
+			f->tx.cooldown = 0;
 			fiforeset(f->dirfd, &f->fd[FFILE_IN], ffiles[FFILE_IN]);
 		} else {
 			logmsg(": %s : Rx > Cancelled by Sender\n", f->name);
@@ -789,6 +794,9 @@ cbfilecontrol(Tox *m, int32_t frnum, uint8_t rec_sen, uint8_t fnum, uint8_t ctrl
 			f->tx.state = TRANSFER_NONE;
 			free(f->tx.buf);
 			f->tx.buf = NULL;
+			f->tx.lastblock.tv_sec = 0;
+			f->tx.lastblock.tv_nsec = 0;
+			f->tx.cooldown = 0;
 		} else {
 			logmsg(": %s : Rx > Complete\n", f->name);
 			if (tox_file_send_control(tox, f->num, 1, 0, TOX_FILECONTROL_FINISHED, NULL, 0) < 0)
@@ -882,6 +890,9 @@ canceltxtransfer(struct friend *f)
 	f->tx.state = TRANSFER_NONE;
 	free(f->tx.buf);
 	f->tx.buf = NULL;
+	f->tx.lastblock.tv_sec = 0;
+	f->tx.lastblock.tv_nsec = 0;
+	f->tx.cooldown = 0;
 	fiforeset(f->dirfd, &f->fd[FFILE_IN], ffiles[FFILE_IN]);
 }
 
@@ -906,12 +917,16 @@ static void
 sendfriendfile(struct friend *f)
 {
 	ssize_t n;
+	struct timespec start, now, diff = {0, 0};
 
-	while (1) {
+	clock_gettime(CLOCK_MONOTONIC, &start);
+
+	while (diff.tv_sec == 0 && diff.tv_nsec < tox_do_interval(tox) * 1E6) {
 		/* Attempt to transmit the pending buffer */
 		if (f->tx.pendingbuf == 1) {
 			if (tox_file_send_data(tox, f->num, f->tx.fnum, f->tx.buf, f->tx.n) == -1) {
-				/* bad luck - we will try again later */
+				clock_gettime(CLOCK_MONOTONIC, &f->tx.lastblock);
+				f->tx.cooldown = 1;
 				break;
 			}
 			f->tx.pendingbuf = 0;
@@ -927,14 +942,21 @@ sendfriendfile(struct friend *f)
 			f->tx.state = TRANSFER_NONE;
 			break;
 		}
-		if (n == -1)
+		if (n == -1) {
+			if (errno != EWOULDBLOCK)
+				weprintf("fiforead:");
 			break;
+		}
 		/* Store transfer size in case we can't send it right now */
 		f->tx.n = n;
 		if (tox_file_send_data(tox, f->num, f->tx.fnum, f->tx.buf, f->tx.n) == -1) {
+			clock_gettime(CLOCK_MONOTONIC, &f->tx.lastblock);
+			f->tx.cooldown = 1;
 			f->tx.pendingbuf = 1;
 			return;
 		}
+		clock_gettime(CLOCK_MONOTONIC, &now);
+		diff = timediff(start, now);
 	}
 }
 
@@ -1591,6 +1613,7 @@ loop(void)
 	char c;
 	fd_set rfds;
 	struct timeval tv;
+	struct timespec curtime, diff;
 	struct file reqfifo;
 
 	t0 = time(NULL);
@@ -1637,13 +1660,25 @@ loop(void)
 		}
 
 		TAILQ_FOREACH(f, &friendhead, entry) {
+			/* Check cooldown state of file transfers */
+			if (f->tx.cooldown) {
+				clock_gettime(CLOCK_MONOTONIC, &curtime);
+				diff = timediff(f->tx.lastblock, curtime);
+
+				if (diff.tv_sec > 0 || diff.tv_nsec > tox_do_interval(tox) * 3 * 1E6) {
+					f->tx.lastblock.tv_sec = 0;
+					f->tx.lastblock.tv_nsec = 0;
+					f->tx.cooldown = 0;
+				}
+			}
+
 			/* Only monitor friends that are online */
 			if (tox_get_friend_connection_status(tox, f->num) == 1) {
 				FD_SET(f->fd[FTEXT_IN], &rfds);
 				if (f->fd[FTEXT_IN] > fdmax)
 					fdmax = f->fd[FTEXT_IN];
 				if (f->tx.state == TRANSFER_NONE ||
-				    f->tx.state == TRANSFER_INPROGRESS) {
+				    (f->tx.state == TRANSFER_INPROGRESS && !f->tx.cooldown)) {
 					FD_SET(f->fd[FFILE_IN], &rfds);
 					if (f->fd[FFILE_IN] > fdmax)
 						fdmax = f->fd[FFILE_IN];
