@@ -119,24 +119,24 @@ enum {
 	FNAME,
 	FSTATUS,
 	FSTATE,
-	FFILE_PENDING,
-	FCALL_PENDING,
+	FFILE_STATE,
+	FCALL_STATE,
 };
 
 static struct file ffiles[] = {
-	[FTEXT_IN]      = { .type = FIFO,   .name = "text_in",      .flags = O_RDONLY | O_NONBLOCK         },
-	[FFILE_IN]      = { .type = FIFO,   .name = "file_in",      .flags = O_RDONLY | O_NONBLOCK         },
-	[FCALL_IN]      = { .type = FIFO,   .name = "call_in",      .flags = O_RDONLY | O_NONBLOCK         },
-	[FTEXT_OUT]     = { .type = STATIC, .name = "text_out",     .flags = O_WRONLY | O_APPEND | O_CREAT },
-	[FFILE_OUT]     = { .type = FIFO,   .name = "file_out",     .flags = O_WRONLY | O_NONBLOCK         },
-	[FCALL_OUT]     = { .type = FIFO,   .name = "call_out",     .flags = O_WRONLY | O_NONBLOCK         },
-	[FREMOVE]       = { .type = FIFO,   .name = "remove",       .flags = O_RDONLY | O_NONBLOCK         },
-	[FONLINE]       = { .type = STATIC, .name = "online",       .flags = O_WRONLY | O_TRUNC  | O_CREAT },
-	[FNAME]         = { .type = STATIC, .name = "name",         .flags = O_WRONLY | O_TRUNC  | O_CREAT },
-	[FSTATUS]       = { .type = STATIC, .name = "status",       .flags = O_WRONLY | O_TRUNC  | O_CREAT },
-	[FSTATE]        = { .type = STATIC, .name = "state",        .flags = O_WRONLY | O_TRUNC  | O_CREAT },
-	[FFILE_PENDING] = { .type = STATIC, .name = "file_pending", .flags = O_WRONLY | O_TRUNC  | O_CREAT },
-	[FCALL_PENDING] = { .type = STATIC, .name = "call_pending", .flags = O_WRONLY | O_TRUNC  | O_CREAT },
+	[FTEXT_IN]    = { .type = FIFO,   .name = "text_in",      .flags = O_RDONLY | O_NONBLOCK         },
+	[FFILE_IN]    = { .type = FIFO,   .name = "file_in",      .flags = O_RDONLY | O_NONBLOCK         },
+	[FCALL_IN]    = { .type = FIFO,   .name = "call_in",      .flags = O_RDONLY | O_NONBLOCK         },
+	[FTEXT_OUT]   = { .type = STATIC, .name = "text_out",     .flags = O_WRONLY | O_APPEND | O_CREAT },
+	[FFILE_OUT]   = { .type = FIFO,   .name = "file_out",     .flags = O_WRONLY | O_NONBLOCK         },
+	[FCALL_OUT]   = { .type = FIFO,   .name = "call_out",     .flags = O_WRONLY | O_NONBLOCK         },
+	[FREMOVE]     = { .type = FIFO,   .name = "remove",       .flags = O_RDONLY | O_NONBLOCK         },
+	[FONLINE]     = { .type = STATIC, .name = "online",       .flags = O_WRONLY | O_TRUNC  | O_CREAT },
+	[FNAME]       = { .type = STATIC, .name = "name",         .flags = O_WRONLY | O_TRUNC  | O_CREAT },
+	[FSTATUS]     = { .type = STATIC, .name = "status",       .flags = O_WRONLY | O_TRUNC  | O_CREAT },
+	[FSTATE]      = { .type = STATIC, .name = "state",        .flags = O_WRONLY | O_TRUNC  | O_CREAT },
+	[FFILE_STATE] = { .type = STATIC, .name = "file_pending", .flags = O_WRONLY | O_TRUNC  | O_CREAT },
+	[FCALL_STATE] = { .type = STATIC, .name = "call_state",   .flags = O_WRONLY | O_TRUNC  | O_CREAT },
 };
 
 static char *ustate[] = {
@@ -161,6 +161,8 @@ struct transfer {
 	ssize_t n;
 	int pendingbuf;
 	int state;
+	struct timespec lastblock;
+	int cooldown;
 };
 
 struct call {
@@ -388,9 +390,9 @@ cbcallinvite(void *av, int32_t cnum, void *udata)
 	logmsg(": %s : Rx AV > Audio call settings: srate = %lu, channels = %lu\n",
 		 f->name, avconfig.audio_sample_rate, avconfig.audio_channels);
 
-	ftruncate(f->fd[FCALL_PENDING], 0);
-	lseek(f->fd[FCALL_PENDING], 0, SEEK_SET);
-	dprintf(f->fd[FCALL_PENDING], "1\n");
+	ftruncate(f->fd[FCALL_STATE], 0);
+	lseek(f->fd[FCALL_STATE], 0, SEEK_SET);
+	dprintf(f->fd[FCALL_STATE], "1\n");
 }
 
 static void
@@ -422,6 +424,11 @@ cbcallstart(void *av, int32_t cnum, void *udata)
 		return;
 	}
 	f->av.transmission = 1;
+
+	ftruncate(f->fd[FCALL_STATE], 0);
+	lseek(f->fd[FCALL_STATE], 0, SEEK_SET);
+	dprintf(f->fd[FCALL_STATE], "2\n");
+
 	logmsg(": %s : Rx/Tx AV > Started\n", f->name);
 }
 
@@ -493,7 +500,7 @@ cancelcall(struct friend *f, char *action)
 	logmsg(": %s : Rx/Tx AV > %s\n", f->name, action);
 
 	if (f->av.num != -1) {
-		if (toxav_get_call_state(toxav, f->av.num) != av_CallInviting) {
+		if (f->av.transmission) {
 			r = toxav_kill_transmission(toxav, f->av.num);
 			if (r < 0)
 				weprintf("Failed to kill transmission\n");
@@ -507,9 +514,9 @@ cancelcall(struct friend *f, char *action)
 		close(f->fd[FCALL_OUT]);
 		f->fd[FCALL_OUT] = -1;
 	}
-	ftruncate(f->fd[FCALL_PENDING], 0);
-	lseek(f->fd[FCALL_PENDING], 0, SEEK_SET);
-	dprintf(f->fd[FCALL_PENDING], "0\n");
+	ftruncate(f->fd[FCALL_STATE], 0);
+	lseek(f->fd[FCALL_STATE], 0, SEEK_SET);
+	dprintf(f->fd[FCALL_STATE], "0\n");
 
 	/* Cancel Tx side of the call */
 	free(f->av.frame);
@@ -772,6 +779,9 @@ cbfilecontrol(Tox *m, int32_t frnum, uint8_t rec_sen, uint8_t fnum, uint8_t ctrl
 			f->tx.state = TRANSFER_NONE;
 			free(f->tx.buf);
 			f->tx.buf = NULL;
+			f->tx.lastblock.tv_sec = 0;
+			f->tx.lastblock.tv_nsec = 0;
+			f->tx.cooldown = 0;
 			fiforeset(f->dirfd, &f->fd[FFILE_IN], ffiles[FFILE_IN]);
 		} else {
 			logmsg(": %s : Rx > Cancelled by Sender\n", f->name);
@@ -784,6 +794,9 @@ cbfilecontrol(Tox *m, int32_t frnum, uint8_t rec_sen, uint8_t fnum, uint8_t ctrl
 			f->tx.state = TRANSFER_NONE;
 			free(f->tx.buf);
 			f->tx.buf = NULL;
+			f->tx.lastblock.tv_sec = 0;
+			f->tx.lastblock.tv_nsec = 0;
+			f->tx.cooldown = 0;
 		} else {
 			logmsg(": %s : Rx > Complete\n", f->name);
 			if (tox_file_send_control(tox, f->num, 1, 0, TOX_FILECONTROL_FINISHED, NULL, 0) < 0)
@@ -792,8 +805,8 @@ cbfilecontrol(Tox *m, int32_t frnum, uint8_t rec_sen, uint8_t fnum, uint8_t ctrl
 				close(f->fd[FFILE_OUT]);
 				f->fd[FFILE_OUT] = -1;
 			}
-			ftruncate(f->fd[FFILE_PENDING], 0);
-			lseek(f->fd[FFILE_PENDING], 0, SEEK_SET);
+			ftruncate(f->fd[FFILE_STATE], 0);
+			lseek(f->fd[FFILE_STATE], 0, SEEK_SET);
 			f->rxstate = TRANSFER_NONE;
 		}
 		break;
@@ -828,9 +841,9 @@ cbfilesendreq(Tox *m, int32_t frnum, uint8_t fnum, uint64_t fsz,
 		return;
 	}
 
-	ftruncate(f->fd[FFILE_PENDING], 0);
-	lseek(f->fd[FFILE_PENDING], 0, SEEK_SET);
-	dprintf(f->fd[FFILE_PENDING], "%s\n", filename);
+	ftruncate(f->fd[FFILE_STATE], 0);
+	lseek(f->fd[FFILE_STATE], 0, SEEK_SET);
+	dprintf(f->fd[FFILE_STATE], "%s\n", filename);
 	f->rxstate = TRANSFER_PENDING;
 	logmsg(": %s : Rx > Pending %s\n", f->name, filename);
 }
@@ -877,6 +890,9 @@ canceltxtransfer(struct friend *f)
 	f->tx.state = TRANSFER_NONE;
 	free(f->tx.buf);
 	f->tx.buf = NULL;
+	f->tx.lastblock.tv_sec = 0;
+	f->tx.lastblock.tv_nsec = 0;
+	f->tx.cooldown = 0;
 	fiforeset(f->dirfd, &f->fd[FFILE_IN], ffiles[FFILE_IN]);
 }
 
@@ -892,8 +908,8 @@ cancelrxtransfer(struct friend *f)
 		close(f->fd[FFILE_OUT]);
 		f->fd[FFILE_OUT] = -1;
 	}
-	ftruncate(f->fd[FFILE_PENDING], 0);
-	lseek(f->fd[FFILE_PENDING], 0, SEEK_SET);
+	ftruncate(f->fd[FFILE_STATE], 0);
+	lseek(f->fd[FFILE_STATE], 0, SEEK_SET);
 	f->rxstate = TRANSFER_NONE;
 }
 
@@ -901,12 +917,16 @@ static void
 sendfriendfile(struct friend *f)
 {
 	ssize_t n;
+	struct timespec start, now, diff = {0, 0};
 
-	while (1) {
+	clock_gettime(CLOCK_MONOTONIC, &start);
+
+	while (diff.tv_sec == 0 && diff.tv_nsec < tox_do_interval(tox) * 1E6) {
 		/* Attempt to transmit the pending buffer */
 		if (f->tx.pendingbuf == 1) {
 			if (tox_file_send_data(tox, f->num, f->tx.fnum, f->tx.buf, f->tx.n) == -1) {
-				/* bad luck - we will try again later */
+				clock_gettime(CLOCK_MONOTONIC, &f->tx.lastblock);
+				f->tx.cooldown = 1;
 				break;
 			}
 			f->tx.pendingbuf = 0;
@@ -922,14 +942,21 @@ sendfriendfile(struct friend *f)
 			f->tx.state = TRANSFER_NONE;
 			break;
 		}
-		if (n == -1)
+		if (n == -1) {
+			if (errno != EWOULDBLOCK)
+				weprintf("fiforead:");
 			break;
+		}
 		/* Store transfer size in case we can't send it right now */
 		f->tx.n = n;
 		if (tox_file_send_data(tox, f->num, f->tx.fnum, f->tx.buf, f->tx.n) == -1) {
+			clock_gettime(CLOCK_MONOTONIC, &f->tx.lastblock);
+			f->tx.cooldown = 1;
 			f->tx.pendingbuf = 1;
 			return;
 		}
+		clock_gettime(CLOCK_MONOTONIC, &now);
+		diff = timediff(start, now);
 	}
 }
 
@@ -1342,11 +1369,11 @@ friendcreate(int32_t frnum)
 	}
 
 	/* Dump file pending state */
-	ftruncate(f->fd[FFILE_PENDING], 0);
+	ftruncate(f->fd[FFILE_STATE], 0);
 
 	/* Dump call pending state */
-	ftruncate(f->fd[FCALL_PENDING], 0);
-	dprintf(f->fd[FCALL_PENDING], "0\n");
+	ftruncate(f->fd[FCALL_STATE], 0);
+	dprintf(f->fd[FCALL_STATE], "0\n");
 
 	f->av.transmission = 0;
 	f->av.num = -1;
@@ -1586,6 +1613,7 @@ loop(void)
 	char c;
 	fd_set rfds;
 	struct timeval tv;
+	struct timespec curtime, diff;
 	struct file reqfifo;
 
 	t0 = time(NULL);
@@ -1632,13 +1660,25 @@ loop(void)
 		}
 
 		TAILQ_FOREACH(f, &friendhead, entry) {
+			/* Check cooldown state of file transfers */
+			if (f->tx.cooldown) {
+				clock_gettime(CLOCK_MONOTONIC, &curtime);
+				diff = timediff(f->tx.lastblock, curtime);
+
+				if (diff.tv_sec > 0 || diff.tv_nsec > tox_do_interval(tox) * 3 * 1E6) {
+					f->tx.lastblock.tv_sec = 0;
+					f->tx.lastblock.tv_nsec = 0;
+					f->tx.cooldown = 0;
+				}
+			}
+
 			/* Only monitor friends that are online */
 			if (tox_get_friend_connection_status(tox, f->num) == 1) {
 				FD_SET(f->fd[FTEXT_IN], &rfds);
 				if (f->fd[FTEXT_IN] > fdmax)
 					fdmax = f->fd[FTEXT_IN];
 				if (f->tx.state == TRANSFER_NONE ||
-				    f->tx.state == TRANSFER_INPROGRESS) {
+				    (f->tx.state == TRANSFER_INPROGRESS && !f->tx.cooldown)) {
 					FD_SET(f->fd[FFILE_IN], &rfds);
 					if (f->fd[FFILE_IN] > fdmax)
 						fdmax = f->fd[FFILE_IN];

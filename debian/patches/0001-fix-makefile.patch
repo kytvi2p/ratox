@@ -6,8 +6,6 @@ Subject: fix makefile
  config.mk | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/config.mk b/config.mk
-index 49bf5b6..8053af1 100644
 --- a/config.mk
 +++ b/config.mk
 @@ -2,11 +2,11 @@
@@ -21,7 +19,7 @@ index 49bf5b6..8053af1 100644
  CC = cc
  LD = $(CC)
  CPPFLAGS = -DVERSION=\"${VERSION}\"
--CFLAGS   = -I/usr/local/include -Wall -Wunused $(CPPFLAGS)
--LDFLAGS  = -L/usr/local/lib -ltoxcore -ltoxav -ltoxencryptsave
-+CFLAGS   = -I/usr/include -Wall -Wunused $(CPPFLAGS) $(shell dpkg-buildflags --get CFLAGS)
-+LDFLAGS  = -L/usr/lib -ltoxcore -ltoxav -ltoxencryptsave $(shell dpkg-buildflags --get LDFLAGS)
+-CFLAGS   = -g -I/usr/local/include -Wall -Wunused $(CPPFLAGS)
+-LDFLAGS  = -g -L/usr/local/lib -ltoxcore -ltoxav -ltoxencryptsave
++CFLAGS   = -g -I/usr/include -Wall -Wunused $(CPPFLAGS) $(shell dpkg-buildflags --get CFLAGS)
++LDFLAGS  = -g -L/usr/lib -ltoxcore -ltoxav -ltoxencryptsave $(shell dpkg-buildflags --get LDFLAGS)
