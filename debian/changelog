@@ -1,3 +1,9 @@
+ratox (0.1+20141013.r306-1~precise+1) precise; urgency=medium
+
+  * Backport to Precise
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Thu, 16 Oct 2014 02:07:43 +0000
+
 ratox (0.1+20141013.r306-1) unstable; urgency=medium
 
   [ FRIGN ]
@@ -23,12 +29,6 @@ ratox (0.1+20141013.r300-1) unstable; urgency=medium
   * New upstream git snapshot
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Tue, 14 Oct 2014 23:25:53 +0000
-
-ratox (0.1+20141013.r299-1~precise+1) precise; urgency=medium
-
-  * Building for Precise
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 13 Oct 2014 22:47:57 +0000
 
 ratox (0.1+20141013.r299-1) unstable; urgency=medium
 
