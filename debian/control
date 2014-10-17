@@ -12,7 +12,7 @@ Vcs-Git: git://killyourtv.i2p/git/ratox.git
 Vcs-Browser: http://killyourtv.i2p/gitweb/?p=ratox.git
 
 Package: ratox
-Architecture: any
+Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: FIFO based Tox client
  ratox is a client implementation of the rather popular tox protocol.
