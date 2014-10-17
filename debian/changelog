@@ -1,3 +1,17 @@
+ratox (0.1+20141016.r308-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Cleanup
+
+  [ sin ]
+  * Remove ugly use of O_DIRECTORY
+
+  [ Kill Your TV ]
+  * New git upstream snapshot
+  * Stop support of kFreeBSD
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 17 Oct 2014 10:32:05 +0000
+
 ratox (0.1+20141013.r306-1~deb7u+1) stable; urgency=medium
 
   * Backport to Wheezy
