@@ -1,3 +1,20 @@
+ratox (0.1+20141018.r312-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Refactor call-state management
+
+  [ sin ]
+  * Indentation fixes
+
+  [ FRIGN ]
+  * Don't forget to queue call_out while incoming ringing
+  * Refactor logic in main-loop for pending calls even more
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sat, 18 Oct 2014 12:03:31 +0000
+
 ratox (0.1+20141016.r308-1) unstable; urgency=medium
 
   [ FRIGN ]
