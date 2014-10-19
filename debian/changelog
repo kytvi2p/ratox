@@ -1,3 +1,9 @@
+ratox (0.1+20141018.r312-1~precise+1) precise; urgency=medium
+
+  * Backport to Precise
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sun, 19 Oct 2014 13:53:04 +0000
+
 ratox (0.1+20141018.r312-1) unstable; urgency=medium
 
   [ FRIGN ]
@@ -28,12 +34,6 @@ ratox (0.1+20141016.r308-1) unstable; urgency=medium
   * Stop support of kFreeBSD
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 17 Oct 2014 10:32:05 +0000
-
-ratox (0.1+20141013.r306-1~precise+1) precise; urgency=medium
-
-  * Backport to Precise
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Thu, 16 Oct 2014 02:07:43 +0000
 
 ratox (0.1+20141013.r306-1) unstable; urgency=medium
 
