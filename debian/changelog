@@ -1,3 +1,17 @@
+ratox (0.1+20141024.r317-1) unstable; urgency=medium
+
+  [ sin ]
+  * Add an examples section in the README
+  * Add screencasting example
+  * Add double spacing between sections in README
+  * Rename .ratox.data to .ratox.tox to comply with STS
+  * Use (none, pending, active) instead of (0, 1, 2)
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 24 Oct 2014 15:19:39 +0000
+
 ratox (0.1+20141018.r312-1ubuntu1) trusty; urgency=medium
 
   * Building for Trusty
