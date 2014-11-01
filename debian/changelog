@@ -1,3 +1,13 @@
+ratox (0.1+20141101.r318-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Don't assume mono-audio in defaults
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sat, 01 Nov 2014 16:47:25 +0000
+
 ratox (0.1+20141024.r317-1) unstable; urgency=medium
 
   [ sin ]
