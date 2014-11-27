@@ -1,3 +1,9 @@
+ratox (0.1+20141126.r319-1~trusty+1) trusty; urgency=medium
+
+  * Building for Trusty
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Thu, 27 Nov 2014 02:46:39 +0000
+
 ratox (0.1+20141126.r319-1) unstable; urgency=medium
 
   [ FRIGN ]
