@@ -1,3 +1,61 @@
+2014-11-01  FRIGN <dev@frign.de>
+
+	* ratox.c: Don't assume mono-audio in defaults
+
+2014-10-24  sin <sin@2f30.org>
+
+	* README, ratox.c: Use (none, pending, active) instead of (0, 1, 2)
+
+2014-10-24  sin <sin@2f30.org>
+
+	* config.def.h: Rename .ratox.data to .ratox.tox to comply with STS https://github.com/Tox/Tox-STS/blob/master/STS.md
+
+2014-10-23  sin <sin@2f30.org>
+
+	* README: Add double spacing between sections in README
+
+2014-10-23  sin <sin@2f30.org>
+
+	* README: Add screencasting example
+
+2014-10-23  sin <sin@2f30.org>
+
+	* README: Add an examples section in the README
+
+2014-10-18  FRIGN <dev@frign.de>
+
+	* ratox.c: Refactor logic in main-loop for pending calls even more and implement fifoopen in other places.
+
+2014-10-17  FRIGN <dev@frign.de>
+
+	* ratox.c: Don't forget to queue call_out while incoming ringing Else the call would be rejected immediately in case you receive a
+	call and have not yet opened call_out for reading.
+
+2014-10-17  sin <sin@2f30.org>
+
+	* ratox.c: Indentation fixes
+
+2014-10-17  FRIGN <dev@frign.de>
+
+	* ratox.c: Refactor call-state management Checking call_out only and stopping the call as soon as call_out is
+	gone is not desirable behaviour.  It now keeps up the running call
+	until both call_out and call_in have been "closed", no matter how or
+	by whom it was started.  This is done by introducing av.state, which is a bit field.  While
+	at it, I also incorporated the transmission-state into it.  toxav_hangup() will now only be called from the one centralized
+	flag-checking-loop before select, not in the callbacks themselves.
+	This will also get rid of some race-conditions (more or less).  Previously, call_out was constantly polled as long as the user was
+	online. Change this to only attempt to open call_out when the call
+	is initialized. This lowers CPU-usage dramatically.
+
+2014-10-16  sin <sin@2f30.org>
+
+	* ratox.c: Remove ugly use of O_DIRECTORY Oops kfreebsd builds break.  Aw well.
+
+2014-10-16  FRIGN <dev@frign.de>
+
+	* ratox.c: Cleanup AV-logging, logic and check for < 0 instead of == -1 (just to make
+	sure).
+
 2014-10-15  sin <sin@2f30.org>
 
 	* ratox.c: Remember to cool down the transfer for pending buffers as
