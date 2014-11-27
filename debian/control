@@ -5,7 +5,7 @@ Maintainer: Kill Your TV <killyourtv@i2pmail.org>
 Build-Depends: debhelper (>= 9)
  ,libtoxencryptsave-dev
  ,libtoxcore-dev
- ,libtoxav-dev
+ ,libtoxav-dev (>= 0.0.0+20141126.r2974)
 Standards-Version: 3.9.6
 Homepage: http://ratox.2f30.org/
 Vcs-Git: git://killyourtv.i2p/git/ratox.git

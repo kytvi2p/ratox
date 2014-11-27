@@ -1,3 +1,13 @@
+ratox (0.1+20141126.r319-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Fit ratox to new toxav-API
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Thu, 27 Nov 2014 00:27:18 +0000
+
 ratox (0.1+20141101.r318-1) unstable; urgency=medium
 
   [ FRIGN ]
