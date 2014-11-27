@@ -1,3 +1,9 @@
+ratox (0.1+20141126.r319-1ubuntu1) utopic; urgency=medium
+
+  * Building for Utopic
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Thu, 27 Nov 2014 02:45:53 +0000
+
 ratox (0.1+20141126.r319-1) unstable; urgency=medium
 
   [ FRIGN ]
