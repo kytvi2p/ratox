@@ -363,7 +363,8 @@ again:
 }
 
 static uint32_t
-interval(Tox *m, ToxAv *av) {
+interval(Tox *m, ToxAv *av)
+{
 	return MIN(tox_do_interval(m), toxav_do_interval(av));
 }
 
@@ -501,12 +502,8 @@ cbcalldata(void *av, int32_t cnum, const int16_t *data, uint16_t len, void *udat
 	while (len > 0) {
 		n = write(f->fd[FCALL_OUT], &buf[wrote], len);
 		if (n < 0) {
-			if (errno == EPIPE) {
+			if (errno == EPIPE)
 				f->av.state &= ~INCOMING;
-				break;
-			} else if (errno == EWOULDBLOCK) {
-				continue;
-			}
 			break;
 		} else if (n == 0) {
 			break;
