@@ -1,3 +1,16 @@
+ratox (0.1+20141128.r321-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Don't lock up on blocking call_out
+
+  [ sin ]
+  * Fix style
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Fri, 28 Nov 2014 14:00:48 +0000
+
 ratox (0.1+20141126.r319-1~precise+1) precise; urgency=medium
 
   * Backport to Precise
