@@ -1,3 +1,14 @@
+ratox (0.1+20141129.r322-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Adapt to latest cleanup in API
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+  * Bump build-dep on libtoxcoreav-dev
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sat, 29 Nov 2014 22:09:39 +0000
+
 ratox (0.1+20141128.r321-1) unstable; urgency=medium
 
   [ FRIGN ]
