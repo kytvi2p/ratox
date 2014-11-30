@@ -1249,7 +1249,7 @@ toxinit(void)
 	toxav_register_callstate_callback(toxav, cbcalltypechange, av_OnPeerCSChange, NULL);
 	toxav_register_callstate_callback(toxav, cbcalltypechange, av_OnSelfCSChange, NULL);
 
-	toxav_register_audio_callback(cbcalldata, NULL);
+	toxav_register_audio_callback(toxav, cbcalldata, NULL);
 
 	return 0;
 }
@@ -1258,9 +1258,20 @@ static int
 toxconnect(void)
 {
 	struct node *n;
+	struct node tmp;
 	uint8_t id[TOX_CLIENT_ID_SIZE];
-	size_t i;
+	size_t i, j;
 	int r;
+
+	srand(time(NULL));
+
+	/* shuffle it to minimize load on nodes */
+	for (i = LEN(nodes) - 1; i > 0; i--) {
+		j = rand() % LEN(nodes);
+		tmp = nodes[j];
+		nodes[j] = nodes[i];
+		nodes[i] = tmp;
+	}
 
 	for (i = 0; i < LEN(nodes); i++) {
 		n = &nodes[i];
