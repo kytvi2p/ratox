@@ -1,3 +1,75 @@
+2014-12-01  sin <sin@2f30.org>
+
+	* ratox.c: Do not handle SIGABRT - let it terminate the process
+	immediately
+
+2014-12-01  sin <sin@2f30.org>
+
+	* ratox.1: Underline references to files
+
+2014-12-01  sin <sin@2f30.org>
+
+	* ratox.1: Add info about `id' file to manpage
+
+2014-12-01  sin <sin@2f30.org>
+
+	* ratox.1: Update manpage
+
+2014-12-01  sin <sin@2f30.org>
+
+	* config.def.h: Increase connection delay to 4 seconds
+
+2014-12-01  sin <sin@2f30.org>
+
+	* ratox.c: Do the datasave() as early as possible in shutdown()
+
+2014-12-01  sin <sin@2f30.org>
+
+	* ratox.c: Save data file on receipt of a deadly signal
+
+2014-12-01  sin <sin@2f30.org>
+
+	* TODO: Update TODO
+
+2014-11-30  sin <sin@2f30.org>
+
+	* config.def.h: Update list of nodes
+
+2014-11-30  sin <sin@2f30.org>
+
+	* ratox.c: Connect to nodes in a random order to minimize load on
+	any given node
+
+2014-11-30  sin <sin@2f30.org>
+
+	* TODO: Update TODO
+
+2014-11-29  FRIGN <dev@frign.de>
+
+	* ratox.c: Adapt to latest cleanup in API
+
+2014-11-28  sin <sin@2f30.org>
+
+	* ratox.c: Fix style
+
+2014-11-27  FRIGN <dev@frign.de>
+
+	* ratox.c: Don't lock up on blocking call_out Since the av-refactor, we keep a call active as long as there is a
+	listener or a sender.  In case we don't have a listener, don't lock
+	up in the sending function and rather just fall-through in case the
+	write blocks.  We can't do that as easily with the file-data-code,
+	because data- integrity is very important there.
+
+2014-11-26  FRIGN <dev@frign.de>
+
+	* ratox.c: Fit ratox to new toxav-API mannol has done a great job re-working the toxav-api[0] also based
+	on our suggestions for a stricter callback-approach.  Previously,
+	toxav-callbacks could hit any time, leaving us with dramatic
+	timing-issues and instability in certain situations.  The new
+	toxav_do()-call enables the client to control when to fire the
+	callbacks. toxav_do_interval() makes sure no time is lost in the
+	meantime.  [0]: https://github.com/irungentoo/toxcore/pull/1163
+
 2014-11-01  FRIGN <dev@frign.de>
 
 	* ratox.c: Don't assume mono-audio in defaults
