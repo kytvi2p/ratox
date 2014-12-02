@@ -1,3 +1,29 @@
+ratox (0.1+20141201.r333-1) unstable; urgency=medium
+
+  [ sin ]
+  * Update TODO
+  * Save data file on receipt of a deadly signal
+  * Do the datasave() as early as possible in shutdown()
+  * Increase connection delay to 4 seconds
+  * Update manpage
+  * Add info about `id' file to manpage
+  * Underline references to files
+  * Do not handle SIGABRT - let it terminate the process immediately
+
+  [ Kill Your TV ]
+  * New upstream git snapshot
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Tue, 02 Dec 2014 00:06:16 +0000
+
+ratox (0.1+20141130.r325-1) unstable; urgency=medium
+
+  [ sin ]
+  * Update list of nodes
+
+  [ Kill Your TV ]
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 01 Dec 2014 01:27:07 +0000
+
 ratox (0.1+20141130.r324-1~deb7u+1) stable; urgency=medium
 
   * Backport to Wheezy
