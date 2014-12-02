@@ -1922,6 +1922,8 @@ shutdown(void)
 
 	logmsg("Shutdown\n");
 
+	datasave();
+
 	/* Friends */
 	for (f = TAILQ_FIRST(&friendhead); f; f = ftmp) {
 		ftmp = TAILQ_NEXT(f, entry);
@@ -1998,7 +2000,6 @@ main(int argc, char *argv[])
 	signal(SIGHUP, initshutdown);
 	signal(SIGINT, initshutdown);
 	signal(SIGQUIT, initshutdown);
-	signal(SIGABRT, initshutdown);
 	signal(SIGTERM, initshutdown);
 	signal(SIGPIPE, SIG_IGN);
 
