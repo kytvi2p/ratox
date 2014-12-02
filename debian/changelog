@@ -1,3 +1,9 @@
+ratox (0.1+20141201.r333-1~deb7u+1) stable; urgency=medium
+
+  * Backport to Wheezy
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Tue, 02 Dec 2014 00:20:38 +0000
+
 ratox (0.1+20141201.r333-1) unstable; urgency=medium
 
   [ sin ]
@@ -23,12 +29,6 @@ ratox (0.1+20141130.r325-1) unstable; urgency=medium
   [ Kill Your TV ]
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 01 Dec 2014 01:27:07 +0000
-
-ratox (0.1+20141130.r324-1~deb7u+1) stable; urgency=medium
-
-  * Backport to Wheezy
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Sun, 30 Nov 2014 22:25:19 +0000
 
 ratox (0.1+20141130.r324-1) unstable; urgency=medium
 
