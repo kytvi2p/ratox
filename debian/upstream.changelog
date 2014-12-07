@@ -1,3 +1,29 @@
+2014-12-07  sin <sin@2f30.org>
+
+	* config.mk: Bump version to 0.2
+
+2014-12-07  FRIGN <dev@frign.de>
+
+	* ratox.c: Re-prompt passphrase when creating a new encrypted save This is more consistent with the de-facto behaviour of
+	password-setting prompts.
+
+2014-12-07  sin <sin@2f30.org>
+
+	* ratox.1: Remove SEE ALSO section from manpage
+
+2014-12-05  sin <sin@2f30.org>
+
+	* LICENSE, ratox.1: Update LICENSE and AUTHORS section in manpage
+
+2014-12-05  sin <sin@2f30.org>
+
+	* ratox.1: Fix wording in manpage
+
+2014-12-05  sin <sin@2f30.org>
+
+	* ratox.1, ratox.c: Add -E and -e to enable and disable data file
+	encryption
+
 2014-12-01  sin <sin@2f30.org>
 
 	* ratox.c: Do not handle SIGABRT - let it terminate the process
