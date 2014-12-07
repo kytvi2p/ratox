@@ -1,3 +1,9 @@
+ratox (0.2-1~trusty+1) trusty; urgency=medium
+
+  * Building for Trusty
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sun, 07 Dec 2014 23:38:19 +0000
+
 ratox (0.2-1) unstable; urgency=medium
 
   [ sin ]
