@@ -1,3 +1,19 @@
+ratox (0.2-1) unstable; urgency=medium
+
+  [ sin ]
+  * Remove SEE ALSO section from manpage
+
+  [ FRIGN ]
+  * Re-prompt passphrase when creating a new encrypted save
+
+  [ sin ]
+  * Bump version to 0.2
+
+  [ Kill Your TV ]
+  * New upstream release
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Sun, 07 Dec 2014 17:00:55 +0000
+
 ratox (0.1+20141205.r336-1~deb7u+1) stable; urgency=medium
 
   * BAckport to Wheezy

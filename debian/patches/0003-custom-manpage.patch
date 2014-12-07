@@ -8,7 +8,7 @@ Subject: custom manpage
 
 --- a/ratox.1
 +++ b/ratox.1
-@@ -23,7 +23,9 @@
+@@ -29,7 +29,9 @@
  Enable TCP mode.  By default, tox operates with UDP and is recommended, as TCP mode implies certain security considerations.
  .It Fl p
  Enable TCP SOCKS5 proxy as specified in \fIconfig.h\fR when the package was built.
