@@ -1,3 +1,54 @@
+ratox (0.2.1-1) unstable; urgency=medium
+
+  [ FRIGN ]
+  * Begin cleanup according to style(9)
+
+  [ sin ]
+  * Guard FD_APPEND with a do { } while(0)
+
+  [ FRIGN ]
+  * Proceed with cleanup
+  * Rework some of the log-warnings
+  * Add ability to specify save file as command line argument
+  * Refine config.def.h a bit
+
+  [ sin ]
+  * Indent with tabs and align with spaces
+  * Simplify comments
+  * Update README with mailing list info
+  * Update README
+  * Fix indentation and alignment
+  * Align globals and local variables
+  * Properly align tables as well
+  * Update LICENSE
+
+  [ FRIGN ]
+  * Add ipv6-, tcp- and proxy-mode to config.def.h
+  * Change the command line parameters to reflect the config.def.h-changes
+  * Rework manpage
+
+  [ Hiltjo Posthuma ]
+  * ratox.1: fix alignment for mandoc -Tpdf and html
+  * ratox.1: use author name and mailto macro
+
+  [ sin ]
+  * Update link to OS/X patch
+
+  [ FRIGN ]
+  * Quick fix for API-change
+  * Implement proxy functionality as desired
+
+  [ Hiltjo Posthuma ]
+  * ratox.1: fix mandoc warnings
+
+  [ sin ]
+  * Bump up to 0.2.1
+
+  [ Kill Your TV ]
+  * New release
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 09 Feb 2015 18:30:16 +0000
+
 ratox (0.2-1) unstable; urgency=medium
 
   [ sin ]

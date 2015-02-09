@@ -9,7 +9,7 @@ Subject: fix makefile
 --- a/config.mk
 +++ b/config.mk
 @@ -2,11 +2,11 @@
- VERSION = 0.2
+ VERSION = 0.2.1
  
  # paths
 -PREFIX = /usr/local
