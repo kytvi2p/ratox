@@ -1,3 +1,9 @@
+ratox (0.2.1-1~deb7u+1) stable; urgency=medium
+
+  * Backport to Wheezy
+
+ -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 09 Feb 2015 18:59:11 +0000
+
 ratox (0.2.1-1) unstable; urgency=medium
 
   [ FRIGN ]
@@ -48,12 +54,6 @@ ratox (0.2.1-1) unstable; urgency=medium
   * New release
 
  -- Kill Your TV <killyourtv@i2pmail.org>  Mon, 09 Feb 2015 18:30:16 +0000
-
-ratox (0.2-1~deb7u+1) stable; urgency=medium
-
-  * Backport to Wheezy
-
- -- Kill Your TV <killyourtv@i2pmail.org>  Sun, 07 Dec 2014 17:11:23 +0000
 
 ratox (0.2-1) unstable; urgency=medium
 
