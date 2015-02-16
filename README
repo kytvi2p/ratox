@@ -112,7 +112,7 @@ Changing nospam: Yes
 toxi URI: No
 
 NOTE: Some of these features are not intended to be developed
-in ratox itself but rather in external scripts that are built upon
+in ratox itself but rather in external scripts[1] that are built upon
 ratox.
 
 
@@ -157,9 +157,9 @@ to apply a patch[2].
 Contact
 =======
 
-You can reach us through the freenode IRC network at #2f30.
-If you have any patches, ideas or feedback feel free to join.
+You can reach us through the freenode IRC network at #2f30 or
+through tech@lists.2f30.org.
 
 [0] https://tox.im/
 [1] http://git.2f30.org/ratox-nuggets/
-[2] http://u.2f30.org/sin/patches/ratox/0001-Add-OSX-replacements-for-certain-functions.patch
+[2] http://ratox.2f30.org/ratox-os_x.patch

@@ -8,18 +8,16 @@ by -p defaulting to Tor.
  config.def.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/config.def.h b/config.def.h
-index 7fd013f..546cb07 100644
 --- a/config.def.h
 +++ b/config.def.h
-@@ -8,8 +8,8 @@
- 
- static int encryptdatafile = 0;
- 
--static char proxyaddr[] = "localhost";
--static uint16_t proxyport = 8080;
-+static char proxyaddr[] = "127.0.0.1";
-+static uint16_t proxyport = 9050;
+@@ -16,8 +16,8 @@
+ static int      tcp         = 0;
+ static int      proxy       = 0;
+ static int      proxytype   = 2; /* 1 = HTTP, 2 = SOCKS5 */
+-static char     proxyaddr[] = "localhost";
+-static uint16_t proxyport   = 8080;
++static char     proxyaddr[] = "127.0.0.1";
++static uint16_t proxyport   = 9050;
  
  static struct node nodes[] = {
  	{
