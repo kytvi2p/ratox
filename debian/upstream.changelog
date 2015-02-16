@@ -1,3 +1,112 @@
+2015-02-08  sin <sin@2f30.org>
+
+	* config.mk: Bump up to 0.2.1
+
+2015-01-04  Hiltjo Posthuma <hiltjo@codemadness.org>
+
+	* ratox.1: ratox.1: fix mandoc warnings
+
+2015-01-06  FRIGN <dev@frign.de>
+
+	* config.def.h, ratox.1, ratox.c: Implement proxy functionality as
+	desired Now we support both HTTP and SOCKS5 proxies. While at it, get rid of
+	the outdated usage string and just establish the fact we have a
+	bloody manpage for explanations.
+
+2015-01-06  FRIGN <dev@frign.de>
+
+	* ratox.c: Quick fix for API-change More fundamental support for the now multiple proxy types will
+	follow.
+
+2014-12-25  sin <sin@2f30.org>
+
+	* README: Update link to OS/X patch
+
+2014-12-25  Hiltjo Posthuma <hiltjo@codemadness.org>
+
+	* ratox.1: ratox.1: use author name and mailto macro
+
+2014-12-25  Hiltjo Posthuma <hiltjo@codemadness.org>
+
+	* ratox.1: ratox.1: fix alignment for mandoc -Tpdf and html
+
+2014-12-24  FRIGN <dev@frign.de>
+
+	* ratox.1: Rework manpage Include the recent parameter-changes and be more concise what we're
+	talking about.  What's left to do is to include the given examples
+	in an EXAMPLE-section (including the examples given in the README).
+
+2014-12-24  FRIGN <dev@frign.de>
+
+	* ratox.c: Change the command line parameters to reflect the
+	config.def.h-changes There must now be a way to explicitly disable proxy-mode and
+	tcp-mode.
+
+2014-12-23  FRIGN <dev@frign.de>
+
+	* config.def.h, ratox.c: Add ipv6-, tcp- and proxy-mode to
+	config.def.h There's no reason to prevent the user from setting this stuff at
+	compile time.
+
+2014-12-23  sin <sin@2f30.org>
+
+	* LICENSE: Update LICENSE
+
+2014-12-23  sin <sin@2f30.org>
+
+	* ratox.c: Properly align tables as well
+
+2014-12-23  sin <sin@2f30.org>
+
+	* ratox.c: Align globals and local variables
+
+2014-12-23  sin <sin@2f30.org>
+
+	* ratox.c: Fix indentation and alignment
+
+2014-12-16  sin <sin@2f30.org>
+
+	* README: Update README
+
+2014-12-16  sin <sin@2f30.org>
+
+	* README: Update README with mailing list info
+
+2014-12-11  sin <sin@2f30.org>
+
+	* config.def.h: Simplify comments
+
+2014-12-11  sin <sin@2f30.org>
+
+	* ratox.c: Indent with tabs and align with spaces
+
+2014-12-09  FRIGN <dev@frign.de>
+
+	* config.def.h: Refine config.def.h a bit
+
+2014-12-08  FRIGN <dev@frign.de>
+
+	* config.def.h, ratox.1, ratox.c: Add ability to specify save file
+	as command line argument Also, get closer to the STS (Single Tox Standard) by calling the the
+	save file "save file" and not "data file".  Additionally, augment
+	the manual section about encrypting and decrypting the save file.
+
+2014-12-08  FRIGN <dev@frign.de>
+
+	* ratox.c: Rework some of the log-warnings
+
+2014-12-08  FRIGN <dev@frign.de>
+
+	* ratox.c: Proceed with cleanup
+
+2014-12-08  sin <sin@2f30.org>
+
+	* ratox.c: Guard FD_APPEND with a do { } while(0)
+
+2014-12-07  FRIGN <dev@frign.de>
+
+	* ratox.c: Begin cleanup according to style(9)
+
 2014-12-07  sin <sin@2f30.org>
 
 	* config.mk: Bump version to 0.2

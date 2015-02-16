@@ -8,14 +8,14 @@ Subject: custom manpage
 
 --- a/ratox.1
 +++ b/ratox.1
-@@ -29,7 +29,9 @@
- Enable TCP mode.  By default, tox operates with UDP and is recommended, as TCP mode implies certain security considerations.
- .It Fl p
- Enable TCP SOCKS5 proxy as specified in \fIconfig.h\fR when the package was built.
--By default when this option is enabled, ratox will use a proxy on \fB127.0.0.1:8080\fR.
+@@ -25,7 +25,9 @@
+ Enable/Disable TCP mode. Avoiding UDP in tox implies certain security
+ considerations.
+ .It Fl P p
+-Enable/Disable TCP HTTP/SOCKS5 proxy as specified in \fIconfig.h\fR.
 +When this option is enabled, ratox will use a proxy on \fI127.0.0.1\fR and port
 +\fI9050\fR (note that this is a divergence from upstream). \fBChanging the host
 +and port requires rebuilding the package!\fR
+ .It Ar savefile
+ Path of the file to load a profile from or create a new one in.
  .El
- .Sh CONFIGURATION
- .Nm
